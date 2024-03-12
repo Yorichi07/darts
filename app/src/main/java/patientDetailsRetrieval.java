@@ -1,3 +1,5 @@
+package app.src.main.java;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,19 +9,18 @@ import java.util.Scanner;
 import java.sql.Date;
 
 public class patientDetailsRetrieval {
-    private static final String url = "jdbc:mysql://localhost:3306/medical_records";
+    private static final String url = "jdbc:mysql://localhost:3306/medical_records?characterEncoding=utf8";
     private static final String username = "root";
     private static final String password = "root";
+    
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
+    public void getPatient(Scanner scanner) {
         System.out.print("Enter Patient ID: ");
         int patientId = scanner.nextInt();
 
-        scanner.close();
 
         Patient patient = getPatientDetails(patientId); 
+        
         if (patient != null) {
             System.out.println("Patient ID: " + patient.getPatientId());
             System.out.println("Name: " + patient.getName());
@@ -71,7 +72,6 @@ class Patient {
     private String allergies;
     private Date lastAppointmentDate;
 
-    // Getters and setters
     public int getPatientId() {
         return patientId;
     }
