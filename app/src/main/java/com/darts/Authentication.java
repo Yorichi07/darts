@@ -10,57 +10,58 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Authentication {
-    private static final String url="jdbc:mysql://localhost:3306/medical_records?characterEncoding=utf8";
-    private static final String SQLusername="root";
-    private static final String SQLpassword="root";
+    private static final String url = "jdbc:mysql://localhost:3306/medical_records?characterEncoding=utf8";
+    private static final String SQLusername = "root";
+    private static final String SQLpassword = "1234";
 
-    public void getHash(Scanner scanner){       //main function
+    public void getHash(Scanner scanner) {
         System.out.println("Enter UserId: ");
-        int UID=scanner.nextInt();
+        int UID = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character after nextInt()
 
         encryptPasswordAndSave(UID);
 
         System.out.println("Enter Username: ");
-        String username=scanner.nextLine();
+        String username = scanner.nextLine();
 
         System.out.println("Enter Password: ");
-        String password=scanner.nextLine();
+        String password = scanner.nextLine();
 
-        if(checkAuthentication(username, password)){
-            System.out.println("Authentication successful for user: "+username);
-        }else{
-            System.out.println("Authentication failed for user: "+username);
+        if (checkAuthentication(username, password)) {
+            System.out.println("Authentication successful for user: " + username);
+        } else {
+            System.out.println("Authentication failed for user: " + username);
         }
     }
 
-    public static void encryptPasswordAndSave(int UID){    
-        try(Connection conn=DriverManager.getConnection(url,SQLusername,SQLpassword)){
-            String query="SELECT username,password FROM users WHERE UID=?";
-            try(PreparedStatement pstmt = conn.prepareStatement(query)){
-                pstmt.setInt(1,UID);
-                try(ResultSet rs = pstmt.executeQuery()){
-                    if(rs.next()){
+    private static void encryptPasswordAndSave(int UID) {
+        try (Connection conn = DriverManager.getConnection(url, SQLusername, SQLpassword)) {
+            String query = "SELECT username,password FROM users WHERE UID=?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setInt(1, UID);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
                         String username = rs.getString("username");
                         String password = rs.getString("password");
 
-                        //encrypting the password using MD5
-                        String encryptedPassword=encryptPasswordMD5(password);
+                        // Encrypting the password using MD5
+                        String encryptedPassword = encryptPasswordMD5(password);
 
-                        //save encrypted password
+                        // Save encrypted password
                         saveEncryptedPassword(username, encryptedPassword);
                     } else {
                         System.out.println("User not found for UID: " + UID);
                     }
                 }
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private static String encryptPasswordMD5(String password){
-        try{
-            MessageDigest md=MessageDigest.getInstance("MD5");
+    private static String encryptPasswordMD5(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
             byte[] digest = md.digest();
             StringBuilder sb = new StringBuilder();
@@ -74,43 +75,43 @@ public class Authentication {
         }
     }
 
-    private static void saveEncryptedPassword(String username, String encryptedPassword){
-        try(Connection conn=DriverManager.getConnection(url, SQLusername, SQLpassword)){
-            String query="UPDATE users SET password=? WHERE username=?";
-            try(PreparedStatement pstmt=conn.prepareStatement(query)){
-                pstmt.setString(1,encryptedPassword);
-                pstmt.setString(2,username);
+    private static void saveEncryptedPassword(String username, String encryptedPassword) {
+        try (Connection conn = DriverManager.getConnection(url, SQLusername, SQLpassword)) {
+            String query = "UPDATE users SET password=? WHERE username=?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, encryptedPassword);
+                pstmt.setString(2, username);
                 int rowsUpdated = pstmt.executeUpdate();
-                if(rowsUpdated>0){
-                    System.out.println("Encrypted password for the user "+username+" is saved successfully.");
-                }else{
-                    System.out.println("Failed to save encrypted password for the user "+username); 
+                if (rowsUpdated > 0) {
+                    System.out.println("Encrypted password for the user " + username + " is saved successfully.");
+                } else {
+                    System.out.println("Failed to save encrypted password for the user " + username);
                 }
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private static boolean checkAuthentication(String username, String password){
+    private static boolean checkAuthentication(String username, String password) {
         String encryptedPassword = encryptPasswordMD5(password);
-        try(Connection conn=DriverManager.getConnection(url,SQLusername,SQLpassword)){
-            String query="SELECT password FROM users WHERE username=?";
-            try(PreparedStatement pstmt = conn.prepareStatement(query)){
+        try (Connection conn = DriverManager.getConnection(url, SQLusername, SQLpassword)) {
+            String query = "SELECT password FROM users WHERE username=?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, username);
-                try(ResultSet rs=pstmt.executeQuery()){
-                    if(rs.next()){
-                        String storedPassword=rs.getString("password");
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        String storedPassword = rs.getString("password");
 
-                        //checking if storedPassword matches user input password
+                        // Checking if storedPassword matches user input password
                         return encryptedPassword.equals(storedPassword);
-                    }else{
-                        System.out.println("Wrong Password! Try Again.");
+                    } else {
+                        System.out.println("User not found: " + username);
                         return false;
                     }
                 }
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }

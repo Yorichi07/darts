@@ -12,7 +12,7 @@ import java.sql.Date;
 public class patientDetailsRetrieval {
     private static final String url = "jdbc:mysql://localhost:3306/medical_records?characterEncoding=utf8";
     private static final String username = "root";
-    private static final String password = "root";
+    private static final String password = "1234";
     
 
     public void getPatient(Scanner scanner) {       //main function
