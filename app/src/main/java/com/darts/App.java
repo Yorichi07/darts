@@ -7,6 +7,7 @@ public class App {
         Scanner sc = new Scanner(System.in);
 
         new patientDetailsRetrieval().getPatient(sc);
+        new Authentication().getHash(sc);
         
         new App();
         sc.close();

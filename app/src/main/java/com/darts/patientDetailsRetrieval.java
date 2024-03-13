@@ -15,7 +15,7 @@ public class patientDetailsRetrieval {
     private static final String password = "root";
     
 
-    public void getPatient(Scanner scanner) {
+    public void getPatient(Scanner scanner) {       //main function
         System.out.print("Enter Patient ID: ");
         int patientId = scanner.nextInt();
 
