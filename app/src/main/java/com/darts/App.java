@@ -1,3 +1,5 @@
+package com.darts;
+
 import java.util.Scanner;
 
 public class App {
