@@ -62,7 +62,7 @@ public class HForm {
         displayForm(admissionForm, "");
     }
 
-    // Function to recursively display the form fields
+    // Function to recursively display the -form fields
     @SuppressWarnings("unchecked")
     private static void displayForm(Map<String, Object> form, String indent) {
         for (Map.Entry<String, Object> entry : form.entrySet()) {

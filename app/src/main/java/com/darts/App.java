@@ -8,7 +8,9 @@ public class App {
 
         //new patientDetailsRetrieval().getPatient(sc);
         //new Authentication().getHash(sc);
-        new signUp().getRegister(sc);
+        //new signUp().getRegister(sc);
+
+        new jwtToken().getJWT(sc);
         
         new App();
         sc.close();
