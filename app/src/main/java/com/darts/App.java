@@ -12,6 +12,12 @@ public class App {
 
         hospitalretrieval.getHospital(sc);
 
+        //new Authentication().getHash(sc);
+        //new signUp().getRegister(sc);
+
+        new jwtToken().getJWT(sc);
+        
+        new App();
         sc.close();
     }
 }

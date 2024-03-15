@@ -14,7 +14,7 @@ public class Authentication {
     private static final String SQLusername = "root";
     private static final String SQLpassword = "1234";
 
-    public void getHash(Scanner scanner) {
+    public void getHash(Scanner scanner) {          //main function
 
         System.out.println("Enter Username: ");
         String username = scanner.nextLine();
