@@ -13,7 +13,6 @@ public class App {
         //new jwtToken().getJWT(sc);
         //new hospitalretrieval().getHospital(sc);
 
-        
 
         new App();
         sc.close();

@@ -28,29 +28,29 @@ public class HForm {
         emergencyContact.put("phone_number", "");
         admissionForm.put("emergency_contact", emergencyContact);
         
-        // Insurance Information
-        Map<String, String> insuranceInfo = new HashMap<>();
-        insuranceInfo.put("insurance_company", "");
-        insuranceInfo.put("policy_number", "");
-        insuranceInfo.put("group_number", "");
-        insuranceInfo.put("primary_insured", "");
-        admissionForm.put("insurance_info", insuranceInfo);
+        // // Insurance Information
+        // Map<String, String> insuranceInfo = new HashMap<>();
+        // insuranceInfo.put("insurance_company", "");
+        // insuranceInfo.put("policy_number", "");
+        // insuranceInfo.put("group_number", "");
+        // insuranceInfo.put("primary_insured", "");
+        // admissionForm.put("insurance_info", insuranceInfo);
         
-        // Medical History
-        Map<String, Object> medicalHistory = new HashMap<>();
-        medicalHistory.put("allergies", new ArrayList<String>());
-        medicalHistory.put("current_medications", new ArrayList<String>());
-        medicalHistory.put("past_medical_history", "");
-        medicalHistory.put("family_medical_history", "");
-        admissionForm.put("medical_history", medicalHistory);
+        // // Medical History
+        // Map<String, Object> medicalHistory = new HashMap<>();
+        // medicalHistory.put("allergies", new ArrayList<String>());
+        // medicalHistory.put("current_medications", new ArrayList<String>());
+        // medicalHistory.put("past_medical_history", "");
+        // medicalHistory.put("family_medical_history", "");
+        // admissionForm.put("medical_history", medicalHistory);
         
         // Other Information
         admissionForm.put("reason_for_admission", "");
         
-        Map<String, String> primaryPhysician = new HashMap<>();
-        primaryPhysician.put("name", "");
-        primaryPhysician.put("phone_number", "");
-        admissionForm.put("primary_physician", primaryPhysician);
+        // Map<String, String> primaryPhysician = new HashMap<>();
+        // primaryPhysician.put("name", "");
+        // primaryPhysician.put("phone_number", "");
+        // admissionForm.put("primary_physician", primaryPhysician);
         
         admissionForm.put("preferred_language", "");
         admissionForm.put("signature", "");
