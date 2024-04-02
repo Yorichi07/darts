@@ -8,15 +8,13 @@ public class App {
 
         //new patientDetailsRetrieval().getPatient(sc);
         // new Authentication().getHash(sc);
-
-
-        hospitalretrieval.getHospital(sc);
-
         //new Authentication().getHash(sc);
         //new signUp().getRegister(sc);
+        //new jwtToken().getJWT(sc);
+        //new hospitalretrieval().getHospital(sc);
 
-        new jwtToken().getJWT(sc);
         
+
         new App();
         sc.close();
     }

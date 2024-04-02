@@ -5,16 +5,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class hospitalretrieval {
     private static final String url = "jdbc:mysql://localhost:3306/medical_records?characterEncoding=utf8";
     private static final String username = "root";
-    private static final String password = "1234";
+    private static final String password = "root";
 
-    public static void getHospital(Scanner scanner) {
+    public void getHospital(Scanner scanner) {
         System.out.println("Enter the hospital ID:");
         int hospitalId = scanner.nextInt();
 
@@ -53,7 +51,7 @@ public class hospitalretrieval {
         getNearestHospitals(hospitalId);
     }
 
-    public static Hospital getHospitalDetails(int hospitalId) {
+    public Hospital getHospitalDetails(int hospitalId) {
         Hospital hospital = null;
 
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -275,6 +273,5 @@ class Hospital {
     public void setBEDS(int BEDS) {
         this.BEDS = BEDS;
     }
-
 
 }

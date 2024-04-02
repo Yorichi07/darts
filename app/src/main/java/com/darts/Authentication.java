@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 public class Authentication {
     private static final String url = "jdbc:mysql://localhost:3306/medical_records?characterEncoding=utf8";
     private static final String SQLusername = "root";
-    private static final String SQLpassword = "1234";
+    private static final String SQLpassword = "root";
 
     public void getHash(Scanner scanner) {          //main function
 
