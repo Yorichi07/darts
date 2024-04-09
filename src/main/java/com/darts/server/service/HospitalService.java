@@ -10,7 +10,6 @@ import com.darts.server.model.Hospital;
 import com.darts.server.repository.HospitalRepository;
 
 @Service
-@SuppressWarnings("null")
 public class HospitalService {
     @Autowired
     HospitalRepository hosRepo;
