@@ -10,6 +10,7 @@ import com.darts.server.model.Hospital;
 import com.darts.server.repository.HospitalRepository;
 
 @Service
+@SuppressWarnings("null")
 public class HospitalService {
     @Autowired
     HospitalRepository hosRepo;
@@ -20,7 +21,7 @@ public class HospitalService {
     }
 
     //Find One
-    public Optional<Hospital> getOneHospital(Long id){
+    public Optional<Hospital> getOneHospital(Integer id){
         return hosRepo.findById(id);
     }
 }
