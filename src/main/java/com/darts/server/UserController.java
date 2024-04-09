@@ -125,29 +125,33 @@ public class UserController {
             return "error";
         }
 
-        //patient data retrieval logic by lakSHIT
-        Optional<Patient_details> optionalPatient = patientService.getOnePatient(token);
+        TokenClass token1 = new TokenClass(secretKey);
+        if(token1.verifyToken(token)){
+            Optional<Patient_details> optionalPatient = patientService.getOnePatient( Integer.parseInt(token1.getPayload()));
 
-        if (!optionalPatient.isPresent()) {
-            return "error";
+            if (!optionalPatient.isPresent()) {
+                return "error";
+            }
+    
+            Patient_details patient = optionalPatient.get();
+    
+            
+            model.addAttribute("firstname", patient.getFirst_name());
+            model.addAttribute("lastname", patient.getLast_name());
+            model.addAttribute("dateofbirth", patient.getDate_of_birth());
+            model.addAttribute("gender", patient.getGender());
+            model.addAttribute("medical_conditions", patient.getMedical_conditions());
+            model.addAttribute("medications", patient.getMedications());
+            model.addAttribute("allergies", patient.getAllergies());
+            model.addAttribute("last_appointment_date", patient.getLast_appointment_date());
+            model.addAttribute("phone_number", patient.getPhone_number());
+            model.addAttribute("email", patient.getEmail());
+            model.addAttribute("address", patient.getAddress());
+    
+            return "patientform";
         }
-
-        Patient_details patient = optionalPatient.get();
-
+        return "error";
         
-        model.addAttribute("firstname", patient.getFirst_name());
-        model.addAttribute("lastname", patient.getLast_name());
-        model.addAttribute("dateofbirth", patient.getDate_of_birth());
-        model.addAttribute("gender", patient.getGender());
-        model.addAttribute("medical_conditions", patient.getMedical_conditions());
-        model.addAttribute("medications", patient.getMedications());
-        model.addAttribute("allergies", patient.getAllergies());
-        model.addAttribute("last_appointment_date", patient.getLast_appointment_date());
-        model.addAttribute("phone_number", patient.getPhone_number());
-        model.addAttribute("email", patient.getEmail());
-        model.addAttribute("address", patient.getAddress());
-
-        return "patientform";
     }
 
 }
