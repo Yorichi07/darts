@@ -13,7 +13,7 @@ public class Specialist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Doc_ID")
-    private Long Doc_ID;
+    private Integer Doc_ID;
 
     @Column(name = "Doc_Name")
     private String Doc_Name;
@@ -21,11 +21,11 @@ public class Specialist {
     @Column(name = "Speciality")
     private String Speciality;
 
-    public Long getDoc_ID() {
+    public Integer getDoc_ID() {
         return Doc_ID;
     }
 
-    public void setDoc_ID(Long Doc_ID) {
+    public void setDoc_ID(Integer Doc_ID) {
         this.Doc_ID = Doc_ID;
     }
 

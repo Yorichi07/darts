@@ -15,6 +15,7 @@ public class UserService {
     UserRepository usrRepo;
 
     //Create
+    @SuppressWarnings("null")
     public Users createUsers(Users usr){
         return usrRepo.save(usr);
     }
@@ -25,7 +26,13 @@ public class UserService {
     }
 
     //Find One
-    public Optional<Users> getOneUsers(Long id){
+    @SuppressWarnings("null")
+    public Optional<Users> getOneUsers(Integer id){
         return usrRepo.findById(id);
+    }
+
+    //Find By userName
+    public Optional<Users> getUserFromUserName(String userName){
+        return usrRepo.findByUsername(userName);
     }
 }

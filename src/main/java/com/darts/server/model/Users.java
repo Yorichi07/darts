@@ -16,7 +16,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UID")
-    private Long UID;
+    private Integer UID;
 
     @Column(name = "name")
     private String name;
@@ -27,15 +27,18 @@ public class Users {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "qrPath")
+    private String qrPath;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JoinColumn(name = "PID", referencedColumnName = "patient_id")
     private Patient_details patient_details;
 
-    public Long getUID() {
+    public Integer getUID() {
         return UID;
     }
 
-    public void setUID(Long UID) {
+    public void setUID(Integer UID) {
         this.UID = UID;
     }
 
@@ -69,5 +72,13 @@ public class Users {
 
     public void setPatient_details(Patient_details patient_details) {
         this.patient_details = patient_details;
+    }
+
+    public String getQrPath(){
+        return this.qrPath;
+    }
+
+    public void setQrPath(String qrPth){
+        this.qrPath = qrPth;
     }
 }

@@ -13,7 +13,7 @@ public class Hospital {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FID")
-    private Long FID;
+    private Integer FID;
 
     @Column(name = "NAME")
     private String NAME;
@@ -63,11 +63,11 @@ public class Hospital {
     @Column(name = "BEDS")
     private long BEDS;
 
-    public Long getFID() {
+    public Integer getFID() {
         return FID;
     }
 
-    public void setFID(Long FID) {
+    public void setFID(Integer FID) {
         this.FID = FID;
     }
 

@@ -16,7 +16,7 @@ public class Patient_details {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "patient_id")
-    private Long patient_id;
+    private Integer patient_id;
 
     @Column(name = "date_of_birth")
     private Date date_of_birth;
@@ -54,11 +54,11 @@ public class Patient_details {
     @OneToOne(mappedBy = "patient_details")
     private Users users;
 
-    public Long getPatient_id() {
+    public Integer getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(Long patient_id) {
+    public void setPatient_id(Integer patient_id) {
         this.patient_id = patient_id;
     }
 
