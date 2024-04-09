@@ -25,11 +25,9 @@ import com.darts.server.model.Users;
 import com.darts.server.service.PatientsService;
 import com.darts.server.service.UserService;
 
-import ch.qos.logback.core.subst.Token;
-
 @RestController
 @PropertySource("classpath:application.properties")
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
 
     //user Service
@@ -45,9 +43,12 @@ public class UserController {
     private String secretKey;
 
     @GetMapping("/test")
-    public boolean test(){
+    public String test(){
         TokenClass tkn = new TokenClass(secretKey);
-        return tkn.verifyToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzEyNjAyODcyLCJleHAiOjE3MTI2MDY0NzJ9.QTeIpOKhzwP6ddWiBNPVkYW6b5xD4zsXaJihu5XY5uoHREIE467-UagGjzDsyyJoTeaoi2nPZIVsW4F-V-ZFQW");
+        if(tkn.verifyToken("eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIwIiwiZXhwIjoxNzEyNjg4NDY4fQ.qCdhgoTAOtWGSoGs1cpnA6D8KIG1gTKEZg72QYv584QJYKi5Ubh2MPFbD35qSnrVm6UNy-xixerB_k8BDiA23g")){
+            return tkn.getPayload();
+        }
+        return "none";
     }
 
     // Add Users
@@ -56,8 +57,10 @@ public class UserController {
 
         //Hashing function
         PasswordHash psswrdHash = new PasswordHash();
-
+        //Response
         HashMap<String,Object> resp = new HashMap<>();
+        // Token Class
+        TokenClass tokenClass = new TokenClass(secretKey);
 
         if(userService.getUserFromUserName(req.get("UserName")).isPresent()){
             resp.put("msg", "User Already Exists");
@@ -79,6 +82,8 @@ public class UserController {
             }
             newUser.setPassword(psswrd);
 
+
+            tokenClass.generateToken(newUser.getUID());
             newUser.setQrPath(CreateQr.generateAndSaveQRCode(psswrd, psswrd));
         }catch(Exception err){
             resp.put("msg", err);

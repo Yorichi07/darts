@@ -1,5 +1,7 @@
 package com.darts.server.functions;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
@@ -12,6 +14,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @SuppressWarnings("deprecation")
 public class TokenClass {
     private String secretKey;
+    private Jws<Claims> payload; 
 
     public TokenClass(String key){
         this.secretKey = key;
@@ -25,30 +28,22 @@ public class TokenClass {
 
         Date expirationDate=new Date(expirationTimeMillis);
 
-        return Jwts.builder().setSubject(userId).setIssuedAt(new Date(currentTimeMillis)).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secretKey).compact();
+        return Jwts.builder().claim("UID", userId).expiration(expirationDate).signWith(new SecretKeySpec(Base64.getDecoder().decode(secretKey),SignatureAlgorithm.HS512.getJcaName())).compact();
     }
 
-    public Integer getPayload(String token){
-        String[] chunks = token.split("\\.");
-
-
-
-        return 0;
+    public String getPayload(){
+        return this.payload.getPayload().get("UID").toString();
     }
     
 
     public boolean verifyToken(String token){        
 
         try {
-            Jwts.parser().verifyWith(new SecretKeySpec(Base64.getDecoder().decode(secretKey), "HS512")).build();
+            this.payload = Jwts.parser().verifyWith(new SecretKeySpec(Base64.getDecoder().decode(secretKey), SignatureAlgorithm.HS512.getJcaName())).build().parseSignedClaims(token);
             return true;
         } catch (JwtException e) {
             return false;
         }
 
-    }
-
-    private static String decode(String encStr){
-        return new String(Base64.getUrlDecoder().decode(encStr));
     }
 }

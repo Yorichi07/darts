@@ -15,7 +15,6 @@ public class UserService {
     UserRepository usrRepo;
 
     //Create
-    @SuppressWarnings("null")
     public Users createUsers(Users usr){
         return usrRepo.save(usr);
     }
@@ -26,7 +25,6 @@ public class UserService {
     }
 
     //Find One
-    @SuppressWarnings("null")
     public Optional<Users> getOneUsers(Integer id){
         return usrRepo.findById(id);
     }
