@@ -22,7 +22,7 @@ import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Users;
-import com.darts.server.service.PatientsService;
+import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.UserService;
 
 @RestController
@@ -36,7 +36,7 @@ public class UserController {
 
     //Patient Service
     @Autowired
-    PatientsService patientService;
+    Patient_detailsService patientService;
 
     //private key
     @Value("${secrets.secretkey}")
@@ -73,7 +73,7 @@ public class UserController {
         newUser.setUsername(req.get("UserName"));
         Patient_details newPatient = new Patient_details();
         try{
-            newPatient = patientService.createPatients(newPatient);
+            newPatient = patientService.createPatient_details(newPatient);
             newUser.setPatient_details(newPatient);
             String psswrd = psswrdHash.getHash(req.get("PassWord"));
             if(psswrd.equals("500")){
