@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Users;
-import com.darts.server.service.PatientService;
+import com.darts.server.service.PatientsService;
 import com.darts.server.service.UserService;
 
 import ch.qos.logback.core.subst.Token;
@@ -37,7 +38,7 @@ public class UserController {
 
     //Patient Service
     @Autowired
-    PatientService patientService;
+    PatientsService patientService;
 
     //private key
     @Value("${secrets.secretkey}")
@@ -69,7 +70,7 @@ public class UserController {
         newUser.setUsername(req.get("UserName"));
         Patient_details newPatient = new Patient_details();
         try{
-            newPatient = patientService.createPatient_details(newPatient);
+            newPatient = patientService.createPatients(newPatient);
             newUser.setPatient_details(newPatient);
             String psswrd = psswrdHash.getHash(req.get("PassWord"));
             if(psswrd.equals("500")){
@@ -114,8 +115,34 @@ public class UserController {
 
     @GetMapping("/formFill")
     @ResponseBody
-    public String getPatientDetails(@RequestParam(name = "token",required = false) String token){
-        return token;
+    public String getPatientDetails(@RequestParam(name = "token",required = false) String token, Model model){
+        if(token==null){
+            return "error";
+        }
+
+        //patient data retrieval logic by lakSHIT
+        Optional<Patient_details> optionalPatient = patientService.getOnePatient(token);
+
+        if (!optionalPatient.isPresent()) {
+            return "error";
+        }
+
+        Patient_details patient = optionalPatient.get();
+
+        
+        model.addAttribute("firstname", patient.getFirst_name());
+        model.addAttribute("lastname", patient.getLast_name());
+        model.addAttribute("dateofbirth", patient.getDate_of_birth());
+        model.addAttribute("gender", patient.getGender());
+        model.addAttribute("medical_conditions", patient.getMedical_conditions());
+        model.addAttribute("medications", patient.getMedications());
+        model.addAttribute("allergies", patient.getAllergies());
+        model.addAttribute("last_appointment_date", patient.getLast_appointment_date());
+        model.addAttribute("phone_number", patient.getPhone_number());
+        model.addAttribute("email", patient.getEmail());
+        model.addAttribute("address", patient.getAddress());
+
+        return "patientform";
     }
 
 }

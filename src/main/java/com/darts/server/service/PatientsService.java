@@ -23,7 +23,7 @@ public class PatientsService {
     }
 
     //Find One
-    public Optional<Patient_details> getOnePatient(Long id){
+    public Optional<Patient_details> getOnePatient(Integer id){
         return patRepo.findById(id);
     }
 }
