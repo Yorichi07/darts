@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Details Form</title>
+  <style>
+    .form-container {
+      width: 50%;
+      margin: auto;
+    }
+
+    .label {
+      display: inline-block;
+      width: 150px;
+      text-align: right;
+      margin-right: 20px;
+    }
+
+    .value {
+      width: calc(100% - 170px);
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+    .details {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+    <h1>Patient Details Form</h1>
+    <div class="form-container">
+        <div class="details">
+            <div class="label">First Name:</div>
+            <div class="value" th:text="${firstname}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Last Name:</div>
+            <div class="value" th:text="${lastname}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Date of Birth:</div>
+            <div class="value" th:text="${dateofbirth}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Gender:</div>
+            <div class="value" th:text="${gender}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Medical Conditions:</div>
+            <div class="value" th:text="${medical_conditions}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Medications:</div>
+            <div class="value" th:text="${medications}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Allergies:</div>
+            <div class="value" th:text="${allergies}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Last Appointment Date:</div>
+            <div class="value" th:text="${last_appointment_date}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Phone Number:</div>
+            <div class="value" th:text="${phone_number}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Email:</div>
+            <div class="value" th:text="${email}"></div>
+        </div>
+        <div class="details">
+            <div class="label">Address:</div>
+            <div class="value" th:text="${address}"></div>
+        </div>
+    </div>
+</body>
+</html>
