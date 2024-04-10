@@ -33,4 +33,13 @@ public class UserService {
     public Optional<Users> getUserFromUserName(String userName){
         return usrRepo.findByUsername(userName);
     }
+
+    //Update
+    public Users updateUsersQrPath(String qrPath,Users usr){
+
+        Users user = usrRepo.findById(usr.getUID()).get();
+        user.setQrPath(qrPath);
+
+        return usrRepo.save(user);
+    }
 }

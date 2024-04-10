@@ -28,4 +28,6 @@ public class Patient_detailsService {
     public Optional<Patient_details> getOnePatient_details(Integer id){
         return patRepo.findById(id);
     }
+
+    //Update 
 }

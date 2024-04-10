@@ -1,5 +1,7 @@
 package com.darts.server;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -70,9 +72,36 @@ public class UserController {
         Users newUser = new Users();
         newUser.setName(req.get("Name"));
         newUser.setUsername(req.get("UserName"));
-        Patient_details newPatient = new Patient_details();
+        
         try{
+            // create patient
+            Patient_details newPatient = new Patient_details();
+            newPatient.setAddress(req.get("Address"));
+            newPatient.setAllergies(req.get("Allergies"));
+            // get date sql format
+            SimpleDateFormat sdfl = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date date = sdfl.parse(req.get("DOB"));
+            Date sqlDate = new Date(date.getTime());
+
+            newPatient.setDate_of_birth(sqlDate);
+            newPatient.setEmail(req.get("Email"));
+            newPatient.setFirst_name(req.get("Name").split(" ")[0]);
+            newPatient.setLast_name(req.get("Name").split(" ")[1]);
+            newPatient.setGender(req.get("Gender"));
+            newPatient.setPhone_number(req.get("PhoneNo"));
+            newPatient.setMedical_conditions(req.get("MedicalCond"));
+            newPatient.setMedications(req.get("Medication"));
+            
+            date = sdfl.parse(req.get("LastAppDate"));
+            sqlDate = new Date(date.getTime());
+            newPatient.setLast_appointment_date(sqlDate);
+
+            newPatient.setEmer_Name(req.get("EmerName"));
+            newPatient.setEmer_Phn(req.get("EmerPhn"));
+            newPatient.setEmer_Rel(req.get("EmerRel"));
+
             newPatient = patientService.createPatient_details(newPatient);
+            //set patient to user
             newUser.setPatient_details(newPatient);
             String psswrd = psswrdHash.getHash(req.get("PassWord"));
             if(psswrd.equals("500")){
@@ -81,16 +110,21 @@ public class UserController {
             }
             newUser.setPassword(psswrd);
 
+            newUser = userService.createUsers(newUser);
+            String tkn = tokenClass.generateToken(newUser.getUID());
+            
+            String qrPath = CreateQr.generateAndSaveQRCode(tkn, newUser.getUID().toString());
 
-            tokenClass.generateToken(newUser.getUID());
-            newUser.setQrPath(CreateQr.generateAndSaveQRCode(psswrd, psswrd));
+            userService.updateUsersQrPath(qrPath, newUser);
+
+            resp.put("token", tkn);
+            resp.put("msg", "User Created");
+            resp.put("qrPath", "http://localhost:8080/"+qrPath);
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
         }catch(Exception err){
             resp.put("msg", err);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
-
-        resp.put("msg", "User Not Created");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
 
     //Login
@@ -120,6 +154,7 @@ public class UserController {
     @GetMapping("/formFill")
     @ResponseBody
     public String getPatientDetails(@RequestParam(name = "token",required = false) String token){
+
         return token;
     }
 

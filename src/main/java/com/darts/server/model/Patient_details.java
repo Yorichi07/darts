@@ -51,6 +51,15 @@ public class Patient_details {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "emer_name")
+    private String emer_Name;
+
+    @Column(name = "emer_rel")
+    private String emer_Rel;
+
+    @Column(name = "emer_phn")
+    private String emer_Phn;
+
     @OneToOne(mappedBy = "patient_details")
     private Users users;
 
@@ -156,5 +165,29 @@ public class Patient_details {
 
     public void setUsers(Users users) {
         this.users = users;
+    }
+
+    public void setEmer_Name(String name){
+        this.emer_Name = name;
+    }
+
+    public void setEmer_Rel(String Rel){
+        this.emer_Name = Rel;
+    }
+
+    public void setEmer_Phn(String Phn){
+        this.emer_Name = Phn;
+    }
+
+    public String getEmer_name(){
+        return this.emer_Name;
+    }
+
+    public String getEmer_Rel(){
+        return this.emer_Rel;
+    }
+
+    public String getEmer_Phn(){
+        return this.emer_Phn;
     }
 }
