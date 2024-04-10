@@ -20,14 +20,16 @@ public class TokenClass {
         this.secretKey = key;
     }
 
-    public String generateToken(int UID){
+    public String generateToken(int UID,boolean willExp){
         String userId=String.valueOf(UID);      //typecasting UID to string
         
         long currentTimeMillis=System.currentTimeMillis();
-        long expirationTimeMillis=currentTimeMillis + 3600000;  //token will expire after 1hr
+        long expirationTimeMillis=currentTimeMillis + 360000000;  //token will expire after 1hr
 
         Date expirationDate=new Date(expirationTimeMillis);
-
+        if(!willExp){
+            return Jwts.builder().claim("UID", userId).signWith(new SecretKeySpec(Base64.getDecoder().decode(secretKey),SignatureAlgorithm.HS512.getJcaName())).compact();
+        }
         return Jwts.builder().claim("UID", userId).expiration(expirationDate).signWith(new SecretKeySpec(Base64.getDecoder().decode(secretKey),SignatureAlgorithm.HS512.getJcaName())).compact();
     }
 
