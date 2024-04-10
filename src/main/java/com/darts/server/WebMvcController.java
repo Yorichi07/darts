@@ -32,6 +32,7 @@ public class WebMvcController implements WebMvcConfigurer{
     @Value("${secrets.secretkey}")
     private String secretKey;
 
+    @SuppressWarnings("null")
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
         String path = "file:///C:/college/minor2/darts/src/main/resources/static";
