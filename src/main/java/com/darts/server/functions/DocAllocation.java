@@ -35,7 +35,8 @@ public class DocAllocation {
         List<Specialist> filteredList = new ArrayList<>();
 
         for (Specialist specialist : specialists) {
-            if (specialist.getDocName().equalsIgnoreCase(searchTerm) ||
+            if ("NO".equalsIgnoreCase(specialist.getEmergency()) && 
+                specialist.getDocName().equalsIgnoreCase(searchTerm) ||
                 specialist.getSpeciality().equalsIgnoreCase(searchTerm)) {
                 filteredList.add(specialist);
             }
