@@ -13,35 +13,46 @@ public class Specialist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Doc_ID")
-    private Integer Doc_ID;
+    private Integer docID;
 
     @Column(name = "Doc_Name")
-    private String Doc_Name;
+    private String docName;
 
     @Column(name = "Speciality")
-    private String Speciality;
+    private String speciality;
 
-    public Integer getDoc_ID() {
-        return Doc_ID;
+    @Column(name="emergency")
+    private String emergency;
+
+    public Integer getDocID() {
+        return docID;
     }
 
-    public void setDoc_ID(Integer Doc_ID) {
-        this.Doc_ID = Doc_ID;
+    public void setDocID(Integer docID) {
+        this.docID = docID;
     }
 
-    public String getDoc_Name() {
-        return Doc_Name;
+    public String getDocName() {
+        return docName;
     }
 
-    public void setDoc_Name(String Doc_Name) {
-        this.Doc_Name = Doc_Name;
+    public void setDocName(String docName) {
+        this.docName = docName;
     }
 
     public String getSpeciality() {
-        return Speciality;
+        return speciality;
     }
 
-    public void setSpeciality(String Speciality) {
-        this.Speciality = Speciality;
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public String getEmergency(){
+        return emergency;
+    }
+
+    public void setEmergency(String emergency){
+        this.emergency=emergency;
     }
 }

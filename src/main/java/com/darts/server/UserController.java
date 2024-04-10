@@ -3,6 +3,7 @@ package com.darts.server;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
+import com.darts.server.functions.DocAllocation;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Patient_details;
+import com.darts.server.model.Specialist;
 import com.darts.server.model.Users;
 import com.darts.server.service.Patient_detailsService;
+import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
 
 @RestController
@@ -38,6 +42,10 @@ public class UserController {
     //Patient Service
     @Autowired
     Patient_detailsService patientService;
+
+    //Specialist Service
+    @Autowired
+    SpecialistService specialistService;
 
     //private key
     @Value("${secrets.secretkey}")
@@ -158,4 +166,22 @@ public class UserController {
         return token;
     }
 
+    @PostMapping("/docAllocation")
+    public ResponseEntity<HashMap<String,Object>> allocateDoctor(@RequestBody HashMap<String, Integer> req){
+        int urgency = req.get("urgency");
+
+        DocAllocation docAllocation = new DocAllocation();
+        List<Specialist> specialists = specialistService.getAllSpecialist();
+        Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency);
+
+        HashMap<String, Object> resp = new HashMap<>();
+        if (allocatedDoctor != null) {
+            resp.put("msg", "Doctor allocated successfully");
+            resp.put("doctor", allocatedDoctor);
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+        } else {
+            resp.put("msg", "No doctor available for allocation");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+    }
 }
