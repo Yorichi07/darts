@@ -167,12 +167,17 @@ public class UserController {
     }
 
     @PostMapping("/docAllocation")
-    public ResponseEntity<HashMap<String,Object>> allocateDoctor(@RequestBody HashMap<String, Integer> req){
-        int urgency = req.get("urgency");
+    public ResponseEntity<HashMap<String,Object>> allocateDoctor(@RequestBody HashMap<String, Object> req){
+        int urgency = (int) req.get("urgency");
+        String searchTerm = null;
+
+        if (req.containsKey("searchTerm")) {
+            searchTerm = (String) req.get("searchTerm");
+        }
 
         DocAllocation docAllocation = new DocAllocation();
         List<Specialist> specialists = specialistService.getAllSpecialist();
-        Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency);
+        Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency, searchTerm);
 
         HashMap<String, Object> resp = new HashMap<>();
         if (allocatedDoctor != null) {
@@ -184,4 +189,5 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
         }
     }
+
 }
