@@ -1,50 +1,19 @@
 package com.darts.server;
 
 import org.springframework.stereotype.Controller;
+<<<<<<< HEAD
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+=======
+>>>>>>> 5b05f9f065f68edd6cc611fe8dba8ce802f81553
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.darts.server.model.Patient_details;
 
 @Controller
 @RequestMapping("/api/hospital")
-public class HospitalController implements WebMvcConfigurer {
+public class HospitalController {
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry){
-        String path = "file:///C:/college/minor2/darts/src/main/resources/static";
-        registry.addResourceHandler("/api/hospital/getPatientDetails")
-                .addResourceLocations(path);
-    }
-
-    @GetMapping("/getPatientDetails")
-    public String getPatientDetails(Model model) {
-
-            
-            // Patient_details patient = new Patient_details();
-
-            model.addAttribute("firstname", "LAKSHIT");
-            // model.addAttribute("lastname", "");
-            // model.addAttribute("dateofbirth", "");
-            // model.addAttribute("gender", "");
-            // model.addAttribute("medical_conditions", "");
-            // model.addAttribute("medications", "");
-            // model.addAttribute("allergies", "");
-            // model.addAttribute("last_appointment_date", "");
-            // model.addAttribute("phone_number", "");
-            // model.addAttribute("email", "");
-            // model.addAttribute("address", "");
-
-            // Since we're redirecting, there's no need to return any string here
-            return "patientform";
-    }
 }
 
 

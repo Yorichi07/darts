@@ -54,7 +54,7 @@ public class UserController {
     @GetMapping("/test")
     public String test(){
         TokenClass tkn = new TokenClass(secretKey);
-        if(tkn.verifyToken("eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIwIiwiZXhwIjoxNzEyNjg4NDY4fQ.qCdhgoTAOtWGSoGs1cpnA6D8KIG1gTKEZg72QYv584QJYKi5Ubh2MPFbD35qSnrVm6UNy-xixerB_k8BDiA23g")){
+        if(tkn.verifyToken("eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxMDI3IiwiZXhwIjoxNzEyNzMyNjc5fQ.UUDqbh3DwPQAjCtytXYEDRAZpcW7N7Iv7lfF2AG6UtjMKLoirNA_jmwZU4VAtUatKvjHYNdT4tSYxj6VobTXfg")){
             return tkn.getPayload();
         }
         return "none";
@@ -119,7 +119,7 @@ public class UserController {
             newUser.setPassword(psswrd);
 
             newUser = userService.createUsers(newUser);
-            String tkn = tokenClass.generateToken(newUser.getUID());
+            String tkn = tokenClass.generateToken(newUser.getUID(),false);
             
             String qrPath = CreateQr.generateAndSaveQRCode(tkn, newUser.getUID().toString());
 
