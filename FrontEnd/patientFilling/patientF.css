@@ -6,7 +6,7 @@
 }
 body {
   font-family: 'Inter', sans-serif;
-  background-image: url(./background\ signup.jpg);
+  background-image: url(../SignUp-In/background\ signup.jpg);
   background-size:cover;
   background-repeat: no-repeat;
 }
@@ -145,7 +145,9 @@ select.formbold-form-input{
   width: 45%;
 }
 .heading h1{
-    text-align: center;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: normal;
+  text-align: center;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight:bolder;
+  font-size: 3.5vh;
+  color: #2e3032;
 }
