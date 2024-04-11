@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="robots" content="INDEX,FOLLOW" />
+    <title>Patient Details</title>
+    <link rel="icon" href="../SignUp & SignIn/title-logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="patient.css" />
+</head>
+
+<body>
+    <div class="formbold-main-wrapper">
+        <div class="formbold-form-wrapper">
+            <div class="heading">
+                <h1>Fill in your details</h1>
+            </div>
+            <img src="./patient details.jpg" />
+            <form>
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="firstname" class="formbold-form-label">
+                            First Name
+                        </label>
+                        <input type="text" name="firstname" id="firstname" placeholder="Your first name"
+                            class="formbold-form-input" />
+                    </div>
+
+                    <div>
+                        <label for="lastname" class="formbold-form-label">
+                            Last Name
+                        </label>
+                        <input type="text" name="lastname" id="lastname" placeholder="Your last name"
+                            class="formbold-form-input" />
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="email" class="formbold-form-label"> Email </label>
+                        <input type="email" name="email" id="email" placeholder="example@email.com"
+                            class="formbold-form-input" />
+                    </div>
+
+                    <div>
+                        <label for="gender" class="formbold-form-label">Gender</label>
+                        <select class="formbold-form-input" name="gender" id="gender">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="phone" class="formbold-form-label"> Phone </label>
+                        <input type="text" name="phone" id="phone" placeholder="Phone number"
+                            class="formbold-form-input" />
+                    </div>
+
+                    <div>
+                        <label for="dob" class="formbold-form-label">
+                            Date of Birth</label>
+                        <input type="date" name="dob" id="dob" class="formbold-form-input" />
+                    </div>
+                </div>
+
+                <div class="formbold-mb-3">
+                    <label for="address" class="formbold-form-label"> Address </label>
+
+                    <input type="text" name="address" id="address" placeholder="Street address"
+                        class="formbold-form-input formbold-mb-3" />
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div class="formbold-form-label">
+                        <label for="allergies" class="formbold-form-label">
+                            Allergies
+                        </label>
+                        <input type="text" name="allergies" id="allergies" class="formbold-form-input" />
+                    </div>
+
+                    <div class="formbold-form-label">
+                        <label for="lad" class="formbold-form-label">
+                            Last Appointment Date
+                        </label>
+                        <input type="date" name="lad" id="lad" class="formbold-form-input" />
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div class="formbold-form-label">
+                        <label for="medications" class="formbold-form-label">
+                            Medications
+                        </label>
+                        <input type="text" name="medications" id="medications" class="formbold-form-input" />
+                    </div>
+
+                    <div class="formbold-form-label">
+                        <label for="medical conditon" class="formbold-form-label">
+                            Medical Conditon
+                        </label>
+                        <input type="text" name="medical conditon" id="medical conditon" class="formbold-form-input" />
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div class="formbold-form-label">
+                        <label for="relative name" class="formbold-form-label">
+                            Relative Name
+                        </label>
+                        <input type="text" name="relative name" id="relative name" placeholder="For emergency"
+                            class="formbold-form-input" />
+                    </div>
+
+                    <div class="formbold-form-label">
+                        <label for="relation" class="formbold-form-label">
+                            Relation
+                        </label>
+                        <input type="text" name="relation" id="relation" placeholder="Your relation with the person"
+                            class="formbold-form-input" />
+                    </div>
+                </div>
+
+                <div>
+                    <label for="relative phone" class="formbold-form-label">
+                        Relative Phone
+                    </label>
+                    <input type="text" name="relative phone" id="relative phone" placeholder="Relative Phone number"
+                        class="formbold-form-input" />
+                </div>
+                <button class="formbold-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
