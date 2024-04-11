@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
@@ -135,6 +133,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/isPatient")
+    public ResponseEntity<HashMap<String,Object>> isPatient(@RequestBody HashMap<String,String> req){
+        
+        HashMap<String,Object> resp = new HashMap<>();
+        
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+    }
+
     //Login
     @PostMapping("/userLogin")
     public ResponseEntity<HashMap<String,Object>> userLogin(@RequestBody HashMap<String,String> req){
@@ -157,13 +163,6 @@ public class UserController {
         
         resp.put("msg", "Incorrect Password");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
-    }
-
-    @GetMapping("/formFill")
-    @ResponseBody
-    public String getPatientDetails(@RequestParam(name = "token",required = false) String token){
-
-        return token;
     }
 
     @PostMapping("/docAllocation")

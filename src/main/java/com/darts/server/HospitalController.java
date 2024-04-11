@@ -1,18 +1,19 @@
 package com.darts.server;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
-<<<<<<< HEAD
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-=======
->>>>>>> 5b05f9f065f68edd6cc611fe8dba8ce802f81553
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.darts.server.model.Specialist;
 
 @Controller
 @RequestMapping("/api/hospital")
 public class HospitalController {
+
+    public static List<Specialist> availableDoctors;
+
+    
 
 }
 
