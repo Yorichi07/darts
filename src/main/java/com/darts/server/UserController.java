@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
 import com.darts.server.functions.DocAllocation;
+import com.darts.server.functions.NearestHospital;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
+import com.darts.server.model.Hospital;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Specialist;
 import com.darts.server.model.Users;
+import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
@@ -45,6 +49,10 @@ public class UserController {
     //Specialist Service
     @Autowired
     SpecialistService specialistService;
+
+    //Hospital Service
+    @Autowired
+    HospitalService hosSer;
 
     //private key
     @Value("${secrets.secretkey}")
@@ -185,6 +193,25 @@ public class UserController {
         } else {
             resp.put("msg", "No doctor available for allocation");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+    }
+
+    @PostMapping("/nearestHospital")
+    public ResponseEntity<HashMap<String,Object>> findNearestHospital(@RequestBody HashMap<String, Double> req){
+        double curLat = req.get("curLat");
+        double curLong = req.get("curLong");
+
+        NearestHospital nearHos = new NearestHospital(hosSer);
+        List<Hospital> hos = nearHos.getNearestHospital(curLat, curLong);
+
+        HashMap<String,Object> resp = new HashMap<>();
+        if (!hos.isEmpty()) {
+            resp.put("msg", "Nearest hospitals found successfully");
+            resp.put("hospitals", hos); 
+            return ResponseEntity.ok(resp);
+        } else {
+            resp.put("msg", "No hospitals available nearby");
+            return ((BodyBuilder) ResponseEntity.notFound()).body(resp); 
         }
     }
 
