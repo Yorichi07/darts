@@ -216,4 +216,7 @@ public class UserController {
         }
     }
 
+    @PostMapping("/checkPatientDetails")
+    public ResponseEntity<HashMap<String,Object>> checkPatientDetails(@RequestBody)
+
 }

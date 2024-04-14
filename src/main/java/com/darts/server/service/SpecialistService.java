@@ -2,6 +2,7 @@ package com.darts.server.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,15 @@ public class SpecialistService {
         Specialist spec=speRepo.findById(id).get();
         spec.setEmergency("NO");
         return speRepo.save(spec);
+    }
+
+    //get distinct specialities
+    public Set<String> getDistinctSpecialities(){
+        return speRepo.findDistinctBySpeciality();
+    }
+
+    //get doctors of a particualar speciality
+    public List<Specialist> getDoctorsBySpeciality(String speciality){
+        return speRepo.findAllBySpeciality(speciality);
     }
 }

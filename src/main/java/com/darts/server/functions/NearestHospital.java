@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.darts.server.model.Hospital;
 import com.darts.server.service.HospitalService;;
 
-@Component
 public class NearestHospital {
     private final HospitalService hosSer;
 
