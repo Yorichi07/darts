@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
@@ -50,12 +51,10 @@ public class UserController {
     private String secretKey;
 
     @GetMapping("/test")
-    public String test(){
+    public String[] test(){
         TokenClass tkn = new TokenClass(secretKey);
-        if(tkn.verifyToken("eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxMDI3IiwiZXhwIjoxNzEyNzMyNjc5fQ.UUDqbh3DwPQAjCtytXYEDRAZpcW7N7Iv7lfF2AG6UtjMKLoirNA_jmwZU4VAtUatKvjHYNdT4tSYxj6VobTXfg")){
-            return tkn.getPayload();
-        }
-        return "none";
+        String[] resp = {tkn.generateToken(498, false),tkn.generateToken(112, false),tkn.generateToken(111, false)};
+        return resp;
     }
 
     // Add Users
@@ -134,7 +133,7 @@ public class UserController {
     }
 
     @GetMapping("/isPatient")
-    public ResponseEntity<HashMap<String,Object>> isPatient(@RequestBody HashMap<String,String> req){
+    public ResponseEntity<HashMap<String,Object>> isPatient(@RequestParam(name = "token") String token) {
         
         HashMap<String,Object> resp = new HashMap<>();
         
