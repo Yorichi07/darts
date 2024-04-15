@@ -89,29 +89,6 @@ public class UserController {
         try{
             // create patient
             Patient_details newPatient = new Patient_details();
-            newPatient.setAddress(req.get("Address"));
-            newPatient.setAllergies(req.get("Allergies"));
-            // get date sql format
-            SimpleDateFormat sdfl = new SimpleDateFormat("dd-MM-yyyy");
-            java.util.Date date = sdfl.parse(req.get("DOB"));
-            Date sqlDate = new Date(date.getTime());
-
-            newPatient.setDate_of_birth(sqlDate);
-            newPatient.setEmail(req.get("Email"));
-            newPatient.setFirst_name(req.get("Name").split(" ")[0]);
-            newPatient.setLast_name(req.get("Name").split(" ")[1]);
-            newPatient.setGender(req.get("Gender"));
-            newPatient.setPhone_number(req.get("PhoneNo"));
-            newPatient.setMedical_conditions(req.get("MedicalCond"));
-            newPatient.setMedications(req.get("Medication"));
-            
-            date = sdfl.parse(req.get("LastAppDate"));
-            sqlDate = new Date(date.getTime());
-            newPatient.setLast_appointment_date(sqlDate);
-
-            newPatient.setEmer_Name(req.get("EmerName"));
-            newPatient.setEmer_Phn(req.get("EmerPhn"));
-            newPatient.setEmer_Rel(req.get("EmerRel"));
 
             newPatient = patientService.createPatient_details(newPatient);
             //set patient to user
@@ -215,4 +192,118 @@ public class UserController {
         }
     }
 
+    @GetMapping("/checkPatientDetails")
+    public ResponseEntity<HashMap<String,Object>> checkPatientDetails(@RequestParam(name = "token") String token){
+        HashMap<String,Object> resp=new HashMap<>();
+        
+        TokenClass tkn = new TokenClass(secretKey);
+        if(!tkn.verifyToken(token)){
+            resp.put("msg","Invalid Token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
+        }
+
+        int UID=Integer.parseInt(tkn.getPayload());
+    
+        Optional<Users> user=userService.getOneUsers(UID);
+        if(!user.isPresent()){
+            resp.put("msg","User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+
+        int PID = user.get().getPatient_details().getPatient_id();
+        Optional<Patient_details> pd = patientService.getOnePatient_details(PID);
+
+        if(!pd.isPresent()){
+            resp.put("msg", "Patient details not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+
+        if (pd.get().getAddress()==null) {
+            resp.put("msg","Patient Details form is not filled.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        resp.put("msg", "Patient details found");
+        resp.put("patientDetails", pd.get());
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+    @PostMapping("/setPatientDetails")
+    public ResponseEntity<HashMap<String,Object>> setPatientDetails(@RequestBody HashMap<String, Object> req){
+        HashMap<String,Object> resp = new HashMap<>();
+        
+        String token = (String) req.get("token");
+        if (token == null || token.isEmpty()) {
+            resp.put("msg", "Token is missing.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        TokenClass tkn = new TokenClass(secretKey);
+        if(!tkn.verifyToken(token)){
+            resp.put("msg","Invalid Token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
+        }
+
+        int UID = Integer.parseInt(tkn.getPayload());
+
+        Optional<Users> userOptional = userService.getOneUsers(UID);
+        if (!userOptional.isPresent()) {
+            resp.put("msg", "User with ID "+UID+" not found." );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+        
+        int PID = userOptional.get().getPatient_details().getPatient_id();
+
+        // Retrieve patient details by PID
+        Optional<Patient_details> patientOptional = patientService.getOnePatient_details(PID);
+        if (!patientOptional.isPresent()) {
+            resp.put("msg", "Patient with ID "+PID+" not found." );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+
+        // Update patient details
+        Patient_details patient = patientOptional.get();
+        patient.setAddress((String) req.get("Address"));
+        patient.setAllergies((String) req.get("Allergies"));
+        try {
+            SimpleDateFormat sdfl = new SimpleDateFormat("dd-MM-yyyy");
+
+            // Parsing Date of Birth
+            java.util.Date dobDate = sdfl.parse((String) req.get("DOB"));
+            Date dobSqlDate = new Date(dobDate.getTime());
+            patient.setDate_of_birth(dobSqlDate);
+
+            patient.setEmail((String) req.get("Email"));
+            String name = (String) req.get("Name");
+            if (name != null && !name.isEmpty()) {
+                String[] nameParts = name.split(" ");
+                if (nameParts.length >= 2) {
+                    patient.setFirst_name(nameParts[0]);
+                    patient.setLast_name(nameParts[1]);
+                }
+            }
+            patient.setGender((String) req.get("Gender"));
+            patient.setPhone_number((String) req.get("PhoneNo"));
+            patient.setMedical_conditions((String) req.get("MedicalCond"));
+            patient.setMedications((String) req.get("Medication"));
+
+            // Parsing Last Appointment Date
+            java.util.Date lastAppDate = sdfl.parse((String) req.get("LastAppDate"));
+            Date lastAppSqlDate = new Date(lastAppDate.getTime());
+            patient.setLast_appointment_date(lastAppSqlDate);
+
+            patient.setEmer_Name((String) req.get("EmerName"));
+            patient.setEmer_Phn((String) req.get("EmerPhn"));
+            patient.setEmer_Rel((String) req.get("EmerRel"));
+            
+            // Save the updated patient details
+            patientService.updatePatient_details(patient);
+            
+            resp.put("msg", "Patient details updated successfully");
+            return ResponseEntity.ok(resp);
+        } catch (Exception e) {
+            resp.put("msg", "Failed to update patient details: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+    }
 }
