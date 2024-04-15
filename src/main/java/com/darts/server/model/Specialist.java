@@ -24,6 +24,18 @@ public class Specialist {
     @Column(name="emergency")
     private String emergency;
 
+    @Column(name = "qrPath")
+    private String qrPath;
+
+
+    public String getQrPath(){
+        return this.qrPath;
+    }
+
+    public void setQrPath(String qr){
+        this.qrPath = qr;
+    }
+
     public Integer getDocID() {
         return docID;
     }

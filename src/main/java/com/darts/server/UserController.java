@@ -58,12 +58,20 @@ public class UserController {
     @Autowired
     HospitalService hosSer;
 
-    //private key
+    //private key patient
     @Value("${secrets.secretkey}")
     private String secretKey;
 
-    // Token Class
+    //Secret Key Doctor
+    @Value("${secrets.secretkeydoc}")
+    private String docSecretKey;
+
+    // Token Class patient
     TokenClass tkn = new TokenClass(secretKey);
+
+
+    //Token Class Doctor
+    TokenClass docTkn = new TokenClass(docSecretKey);
 
     @GetMapping("/test")
     public String[] test(){
@@ -317,4 +325,5 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
 }

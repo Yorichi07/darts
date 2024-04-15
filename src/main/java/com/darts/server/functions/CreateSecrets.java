@@ -27,7 +27,7 @@ public class CreateSecrets {
 
         try{
             OutputStream outputStream = new FileOutputStream("./src/main/resources/application.properties");
-            properties.setProperty("secrets.secretkey", secret_key);
+            properties.setProperty("secrets.secretkeydoc", secret_key);
             properties.store(outputStream, null);
         }catch(Exception err){
             err.printStackTrace();
