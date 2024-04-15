@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @PropertySource("classpath:application.properties")
 @RequestMapping("/api/user")

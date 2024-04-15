@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.UserService;
 
 
+@CrossOrigin(origins = "*")
 @Controller
 @PropertySource("classpath:application.properties")
 @RequestMapping("/api/pages")
@@ -36,6 +38,9 @@ public class WebMvcController implements WebMvcConfigurer{
     @Value("${secrets.secretkey}")
     private String secretKey;
 
+    //token
+    TokenClass tkn = new TokenClass(secretKey);
+
     @SuppressWarnings("null")
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
@@ -47,8 +52,7 @@ public class WebMvcController implements WebMvcConfigurer{
     @PostMapping("/getPatientDetails")
     public String getPatientDetails(@RequestBody HashMap<String,String> req,Model model) {
 
-        //token
-        TokenClass tkn = new TokenClass(secretKey);
+        
         
         if(tkn.verifyToken(req.get("hospitaltkn"))){
 

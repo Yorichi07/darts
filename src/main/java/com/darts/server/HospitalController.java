@@ -8,6 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Specialist;
 import com.darts.server.service.SpecialistService;
 
+@CrossOrigin(origins = "*")
 @PropertySource("classpath:application.properties")
 @RestController
 @RequestMapping("/api/hospital")
@@ -106,7 +108,14 @@ public class HospitalController {
 
     @PostMapping("/assignDocBySymp")
     public ResponseEntity<HashMap<String,Object>> assignDocBySymp(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,@RequestBody HashMap<String,Object> req){
-        return null;
+        HashMap<String,Object> resp = new HashMap<>();
+        TokenClass tkn = new TokenClass(secretKey);
+
+        if(tkn.verifyToken(token.split(" ")[1])){
+
+        }
+        
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 }
 
