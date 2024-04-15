@@ -41,20 +41,6 @@ public class SpecialistService {
         return speRepo.findBySpeciality(Speciality);
     }
 
-    //Set emergency status to yes
-    public Specialist setEmergencyToYes(Integer id){
-        Specialist spec=speRepo.findById(id).get();
-        spec.setEmergency("YES");
-        return speRepo.save(spec);
-    }
-
-    //Set emergency status to no
-    public Specialist setEmergencyToNo(Integer id){
-        Specialist spec=speRepo.findById(id).get();
-        spec.setEmergency("NO");
-        return speRepo.save(spec);
-    }
-
     //get distinct specialities
     public Set<String> getDistinctSpecialities(){
         return speRepo.findDistinctBySpeciality();

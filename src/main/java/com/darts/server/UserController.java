@@ -23,13 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
-import com.darts.server.functions.DocAllocation;
 import com.darts.server.functions.NearestHospital;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Hospital;
 import com.darts.server.model.Patient_details;
-import com.darts.server.model.Specialist;
 import com.darts.server.model.Users;
 import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
@@ -58,12 +56,20 @@ public class UserController {
     @Autowired
     HospitalService hosSer;
 
-    //private key
+    //private key patient
     @Value("${secrets.secretkey}")
     private String secretKey;
 
-    // Token Class
+    //Secret Key Doctor
+    @Value("${secrets.secretkeydoc}")
+    private String docSecretKey;
+
+    // Token Class patient
     TokenClass tkn = new TokenClass(secretKey);
+
+
+    //Token Class Doctor
+    TokenClass docTkn = new TokenClass(docSecretKey);
 
     @GetMapping("/test")
     public String[] test(){
@@ -151,26 +157,26 @@ public class UserController {
 
     @PostMapping("/docAllocation")
     public ResponseEntity<HashMap<String,Object>> allocateDoctor(@RequestBody HashMap<String, Object> req){
-        int urgency = (int) req.get("urgency");
-        String searchTerm = null;
+        // int urgency = (int) req.get("urgency");
+        // String searchTerm = null;
 
-        if (req.containsKey("searchTerm")) {
-            searchTerm = (String) req.get("searchTerm");
-        }
+        // if (req.containsKey("searchTerm")) {
+        //     searchTerm = (String) req.get("searchTerm");
+        // }
 
-        DocAllocation docAllocation = new DocAllocation();
-        List<Specialist> specialists = specialistService.getAllSpecialist();
-        Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency, searchTerm);
+        // List<Specialist> specialists = specialistService.getAllSpecialist();
+        // Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency, searchTerm);
 
-        HashMap<String, Object> resp = new HashMap<>();
-        if (allocatedDoctor != null) {
-            resp.put("msg", "Doctor allocated successfully");
-            resp.put("doctor", allocatedDoctor);
-            return ResponseEntity.status(HttpStatus.OK).body(resp);
-        } else {
-            resp.put("msg", "No doctor available for allocation");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
-        }
+        // HashMap<String, Object> resp = new HashMap<>();
+        // if (allocatedDoctor != null) {
+        //     resp.put("msg", "Doctor allocated successfully");
+        //     resp.put("doctor", allocatedDoctor);
+        //     return ResponseEntity.status(HttpStatus.OK).body(resp);
+        // } else {
+        //     resp.put("msg", "No doctor available for allocation");
+        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        // }
+        return null;
     }
 
     @PostMapping("/nearestHospital")
@@ -293,6 +299,8 @@ public class UserController {
             patient.setEmer_Name((String) req.get("EmerName"));
             patient.setEmer_Phn((String) req.get("EmerPhn"));
             patient.setEmer_Rel((String) req.get("EmerRel"));
+
+            System.out.println(req.get("EmerName").toString()+req.get("EmerPhn").toString()+req.get("EmerRel").toString());
             
             // Save the updated patient details
             patientService.updatePatient_details(patient);
@@ -317,4 +325,5 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
 }
