@@ -225,6 +225,7 @@
         // When the user clicks the button, open the modal
         btn.onclick = function() {
             var xhr = new XMLHttpRequest();
+            xhr.setRequestHeader("Authorization")
             xhr.open("GET", "http://localhost:8080/api/user/getPatientDetails", true);
             xhr.onreadystatechange = function(){
                 if(xhr.readyState === XMLHttpRequest.DONE){
