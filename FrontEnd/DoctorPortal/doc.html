@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="robots" content="INDEX,FOLLOW" />
+    <title>Doctor Portal</title>
+    <link rel="icon" href="./title-logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="doc.css" />
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="./doc.html" class="active">Patient Details</a>
+        <a href="./qr.html">QR Code</a>
+    </div>
+    <div class="formbold-main-wrapper">
+        <div class="formbold-form-wrapper">
+            <form>
+                <div>
+                    <label for="firstname" class="formbold-form-label">
+                        First Name
+                    </label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${firstname}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="lastname" class="formbold-form-label">
+                        Last Name
+                    </label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${lastname}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="formbold-form-label"> Email </label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${email}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="gender" class="formbold-form-label">Gender</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${gender}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="phone" class="formbold-form-label"> Phone </label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${phone_number}">
+                            text box
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="dob" class="formbold-form-label"> Date of Birth</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${dateofbirth}">
+                            text box
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="address" class="formbold-form-label"> Address </label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${address}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="allergies" class="formbold-form-label">
+                        Allergies</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${allergies}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="lad" class="formbold-form-label">Last Appointment Date</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${last_appointment_date}">
+                            text box
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="medications" class="formbold-form-label">Medications</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${medications}">
+                            text box
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="medical conditon" class="formbold-form-label">Medical Conditon</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${medical_conditions}">
+                            text box
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="relative name" class="formbold-form-label">Relative Name</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${emer_name}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="relation" class="formbold-form-label"> Relation </label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${emer_rel}">text box</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="relative phone" class="formbold-form-label">Relative Phone</label>
+                    <div class="output-box">
+                        <div class="text-container" th:text="${emer_phn}">text box</div>
+                    </div>
+                </div>
+                <div class="btn-container">
+                    <button class="btn">Assign Bed</button>
+                    <button class="btn">Release Patient</button>
+                    <button class="btn">Leave</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-image: url(./background\ signup.jpg);
+  background-size: cover;
+}
+
+.navbar {
+  background-color: rgb(79, 166, 176);
+  padding: 15px;
+  font-size: 3vh;
+  border-bottom: 3px solid #000000;
+  border-top: 3px solid #000000;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+}
+.navbar a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.navbar a.active {
+  font-weight: bold;
+  text-decoration: underline;
+}

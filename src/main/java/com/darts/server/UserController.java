@@ -301,6 +301,8 @@ public class UserController {
             patient.setEmer_Name((String) req.get("EmerName"));
             patient.setEmer_Phn((String) req.get("EmerPhn"));
             patient.setEmer_Rel((String) req.get("EmerRel"));
+
+            System.out.println(req.get("EmerName").toString()+req.get("EmerPhn").toString()+req.get("EmerRel").toString());
             
             // Save the updated patient details
             patientService.updatePatient_details(patient);
@@ -325,4 +327,5 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
 }
