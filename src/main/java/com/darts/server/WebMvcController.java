@@ -35,7 +35,7 @@ public class WebMvcController implements WebMvcConfigurer{
 
     @GetMapping("/Signup")
     public String Signup(){
-        return "qrgen";
+        return "doctorPortal/doc.html";
     }
 
     @GetMapping("/getPatientDetails")
@@ -66,6 +66,7 @@ public class WebMvcController implements WebMvcConfigurer{
             // Since we're redirecting, there's no need to return any string here
             return "patientRetrieval/patientR";
         }
+
 
         return "error";
     }
