@@ -172,11 +172,11 @@ public class Patient_details {
     }
 
     public void setEmer_Rel(String Rel){
-        this.emer_Name = Rel;
+        this.emer_Rel = Rel;
     }
 
     public void setEmer_Phn(String Phn){
-        this.emer_Name = Phn;
+        this.emer_Phn = Phn;
     }
 
     public String getEmer_name(){
