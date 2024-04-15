@@ -129,15 +129,17 @@ public class HospitalController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 
-    @GetMapping("/getDocQr")
-    public ResponseEntity<String> getQrPath(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+    @GetMapping("/getQrPath")
+    public ResponseEntity<HashMap<String,Object>> getQrPath(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
         //Token Class Doctor
         TokenClass docTkn = new TokenClass(docSecretKey);
-
+        HashMap<String,Object> resp = new HashMap<>();
         if(docTkn.verifyToken(token.split(" ")[1])){
-            return ResponseEntity.ok(specialistService.getOneSpecialist(Integer.parseInt(docTkn.getPayload())).get().getQrPath());
+            resp.put("path", specialistService.getOneSpecialist(Integer.parseInt(docTkn.getPayload())).get().getQrPath());
+            return ResponseEntity.ok(resp);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Token");
+        resp.put("msg", "Invalid Token");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 }
 

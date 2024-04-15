@@ -1,5 +1,6 @@
 package com.darts.server;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
+import com.google.zxing.WriterException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -66,11 +68,21 @@ public class UserController {
     private String docSecretKey;
 
     @GetMapping("/test")
-    public String[] test(){
+    public String test(){
         // Token Class patient
-        TokenClass tkn = new TokenClass(secretKey);
-        String[] resp = {tkn.generateToken(498, false),tkn.generateToken(112, false),tkn.generateToken(111, false)};
-        return resp;
+        TokenClass tkn = new TokenClass(docSecretKey);
+        String tk = tkn.generateToken(108, false);
+        try {
+            specialistService.updateSpecialistQrPath(specialistService.getOneSpecialist(108).get(), CreateQr.generateAndSaveQRCode(tk,Integer.toString(108),true));
+            return tk;
+        } catch (WriterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Add Users
@@ -112,7 +124,7 @@ public class UserController {
             newUser = userService.createUsers(newUser);
             String tkns = tkn.generateToken(newUser.getUID(),false);
             
-            String qrPath = CreateQr.generateAndSaveQRCode(tkns, newUser.getUID().toString());
+            String qrPath = CreateQr.generateAndSaveQRCode(tkns, newUser.getUID().toString(),false);
 
             userService.updateUsersQrPath(qrPath, newUser);
 

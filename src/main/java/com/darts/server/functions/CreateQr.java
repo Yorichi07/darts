@@ -19,14 +19,19 @@ import java.util.Map;
 public class CreateQr {
 
     // Method to generate and save QR code
-    public static String generateAndSaveQRCode(String token,String UID) throws WriterException, IOException {
+    public static String generateAndSaveQRCode(String token,String UID,boolean isDoc) throws WriterException, IOException {
         // Encode hints
         Map<EncodeHintType, Object> hintMap = new HashMap<>();
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 
         int width = 300;
         int height = 300;
-        String filePath = "./build/resources/main/static/qrs/"+UID+".png";
+        String filePath;
+        if(!isDoc){
+            filePath = "./build/resources/main/static/qrs/user/"+UID+".png";
+        }else{
+            filePath = "./build/resources/main/static/qrs/docs/"+UID+".png";
+        }
 
         // Create QR code writer
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
@@ -41,8 +46,10 @@ public class CreateQr {
 
         // Write to file
         MatrixToImageWriter.writeToFile(bitMatrix, "PNG", qrCodeFile);
-
-        return "qrs/"+UID+".png";
+        if(isDoc){
+            return "qrs/docs/"+UID+".png";
+        }
+        return "qrs/user/"+UID+".png";
     }
 }
 

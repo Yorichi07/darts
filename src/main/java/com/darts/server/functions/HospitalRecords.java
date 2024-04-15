@@ -88,6 +88,8 @@ public class HospitalRecords {
 
         // Remove the first index
         doctors.get(doc.getSpeciality()).get(doc.getDocID()).remove(0);
+
+        patDocMap.remove(UID);
     }
 
     public static Integer searchPatNum(Integer UID){

@@ -21,7 +21,7 @@ public class Specialist {
     @Column(name = "Speciality")
     private String speciality;
 
-    @Column(name = "qrPath")
+    @Column(name = "qr_path")
     private String qrPath;
 
     @Column(name = "username")

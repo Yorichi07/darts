@@ -27,7 +27,7 @@ public class Users {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "qrPath")
+    @Column(name = "qr_path")
     private String qrPath;
 
     @OneToOne(cascade = CascadeType.ALL)
