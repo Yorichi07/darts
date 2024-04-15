@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.darts.server.functions.HospitalRecords;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Users;
@@ -45,13 +46,29 @@ public class WebMvcController implements WebMvcConfigurer{
     }
 
     @GetMapping("/getPatient")
-    public String getPatient(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,Model model){
+    public String getPatient(@RequestParam(name = "token",required = false) String token,Model model){
         if(token == null){
             return "error";
         }
         TokenClass tkn = new TokenClass(docSecretKey);
-        if(tkn.verifyToken(token.split(" ")[1])){
+        if(tkn.verifyToken(token)){
             int DID = Integer.parseInt(token);
+            int UID = HospitalRecords.getPat(DID);
+            Patient_details patient = patient_detailsService.getOnePatient_details(userService.getOneUsers(UID).get().getPatient_details().getPatient_id()).get();
+
+            model.addAttribute("firstname", patient.getFirst_name());
+            model.addAttribute("lastname",patient.getLast_name());
+            model.addAttribute("dateofbirth", patient.getDate_of_birth());
+            model.addAttribute("gender", patient.getGender());
+            model.addAttribute("medical_conditions", patient.getMedical_conditions());
+            model.addAttribute("medications", patient.getMedications());
+            model.addAttribute("allergies", patient.getAllergies());
+            model.addAttribute("last_appointment_date", patient.getLast_appointment_date());
+            model.addAttribute("phone_number", patient.getPhone_number());
+            model.addAttribute("email", patient.getEmail());
+            model.addAttribute("address", patient.getAddress());
+            
+            return "";
         }
         return "error";
     }

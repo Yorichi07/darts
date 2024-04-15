@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.HospitalRecords;
 import com.darts.server.functions.TokenClass;
-import com.darts.server.model.Patient_details;
 import com.darts.server.model.Specialist;
 import com.darts.server.service.SpecialistService;
 
@@ -39,7 +38,6 @@ public class HospitalController {
     @Value("${secrets.secretkeydoc}")
     private String docSecretKey;
 
-    
 
     @PostMapping("/doctorPunchIn")
     public ResponseEntity<HashMap<String,String>> doctorpunchin(@RequestBody HashMap<String, String>req){
@@ -142,6 +140,8 @@ public class HospitalController {
         resp.put("msg", "Invalid Token");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
+
+    
 }
 
 
