@@ -1,6 +1,7 @@
 package com.darts.server;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.HospitalRecords;
+import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Specialist;
@@ -140,6 +142,34 @@ public class HospitalController {
             return ResponseEntity.ok(resp);
         }
         resp.put("msg", "Invalid Token");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
+    }
+
+    //Login
+    @PostMapping("/docLogin")
+    public ResponseEntity<HashMap<String,Object>> userLogin(@RequestBody HashMap<String,String> req){
+        
+        //Hashing function
+        PasswordHash psswrdHash = new PasswordHash();
+        //response
+        HashMap<String,Object> resp = new HashMap<>();
+        //Token class
+        TokenClass tkn = new TokenClass(docSecretKey);
+
+        Optional<Specialist> user = specialistService.getDocFromUserName(req.get("UserName"));
+        
+        if(!user.isPresent()){
+            resp.put("msg", "Doc Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+
+        if(user.get().getPassword().equals((psswrdHash.getHash(req.get("PassWord"))))){
+            resp.put("token", tkn.generateToken(user.get().getDocID(), true));
+            resp.put("msg", "Login Sucessfull");
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+        }
+        
+        resp.put("msg", "Incorrect Password");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 }

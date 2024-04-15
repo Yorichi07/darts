@@ -39,9 +39,9 @@ public class WebMvcController implements WebMvcConfigurer{
     @Value("${secrets.secretkeydoc}")
     private String docSecretKey;
 
-    @GetMapping("/Signup")
+    @GetMapping("/docAuth")
     public String Signup(){
-        return "doctorPortal/doc.html";
+        return "doctorPortal/Sign";
     }
 
     @GetMapping("/getPatient")
