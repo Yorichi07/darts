@@ -1,5 +1,6 @@
 package com.darts.server;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
+import com.darts.server.functions.HospitalRecords;
 import com.darts.server.functions.NearestHospital;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
@@ -33,6 +35,7 @@ import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
+import com.google.zxing.WriterException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -64,22 +67,29 @@ public class UserController {
     @Value("${secrets.secretkeydoc}")
     private String docSecretKey;
 
-    // Token Class patient
-    TokenClass tkn = new TokenClass(secretKey);
-
-
-    //Token Class Doctor
-    TokenClass docTkn = new TokenClass(docSecretKey);
-
     @GetMapping("/test")
-    public String[] test(){
-        String[] resp = {tkn.generateToken(498, false),tkn.generateToken(112, false),tkn.generateToken(111, false)};
-        return resp;
+    public String test(){
+        // Token Class patient
+        TokenClass tkn = new TokenClass(docSecretKey);
+        String tk = tkn.generateToken(108, false);
+        try {
+            specialistService.updateSpecialistQrPath(specialistService.getOneSpecialist(108).get(), CreateQr.generateAndSaveQRCode(tk,Integer.toString(108),true));
+            return tk;
+        } catch (WriterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Add Users
     @PostMapping("/addUsers")
     public ResponseEntity<HashMap<String,Object>> addUser(@RequestBody HashMap<String,String> req){
+        // Token Class patient
+        TokenClass tkn = new TokenClass(secretKey);
 
         //Hashing function
         PasswordHash psswrdHash = new PasswordHash();
@@ -114,7 +124,7 @@ public class UserController {
             newUser = userService.createUsers(newUser);
             String tkns = tkn.generateToken(newUser.getUID(),false);
             
-            String qrPath = CreateQr.generateAndSaveQRCode(tkns, newUser.getUID().toString());
+            String qrPath = CreateQr.generateAndSaveQRCode(tkns, newUser.getUID().toString(),false);
 
             userService.updateUsersQrPath(qrPath, newUser);
 
@@ -315,6 +325,8 @@ public class UserController {
     
     @GetMapping("/getPatientDetails")
     public ResponseEntity<Patient_details> getPatientDetails(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+        // Token Class patient
+        TokenClass tkn = new TokenClass(secretKey);
 
         if(tkn.verifyToken(token)){
             int UID =Integer.parseInt(tkn.getPayload());
@@ -324,6 +336,31 @@ public class UserController {
             return ResponseEntity.ok(pat);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @GetMapping("/getQrPath")
+    public ResponseEntity<String> getQrPath(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+        // Token Class patient
+        TokenClass tkn = new TokenClass(secretKey);
+
+        if(tkn.verifyToken(token.split(" ")[1])){
+            return ResponseEntity.ok(userService.getOneUsers(Integer.parseInt(tkn.getPayload())).get().getQrPath());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+    }
+
+    @GetMapping("/patWait")
+    public ResponseEntity<Integer> patWait(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+        TokenClass tkn = new TokenClass(secretKey);
+        if(tkn.verifyToken(token.split(" ")[1])){
+            int UID = Integer.parseInt(tkn.getPayload());
+            int res = HospitalRecords.searchPatNum(UID);
+            if (res == -2){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+            }
+            return ResponseEntity.ok(res);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(-3);
     }
 
 }

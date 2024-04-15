@@ -16,3 +16,32 @@
         <a href="./doc.html">Patient Details</a>
         <a href="./qr.html" class="active">QR Code</a>
     </div>
+
+    <img id="qrCode" src="#" alt="QR Code">
+    <button onclick="getQRCodeLink()">Get QR Code Link</button>
+    
+</body>
+</html>
+<script>
+    localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxMDgifQ.nxpq4eM9PVVnb1yOiLchK3aAQeVkraAfGcAqM-20ln2nTK138urDtBUUxU6My99ko4zFALr5VyhJuOADwHsXnA")
+    fetch("http://localhost:8080/api/hospital/getQrPath",{
+            method:"GET",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":`Bearer ${localStorage.getItem("token")}`
+            },
+        }).then(res=>{
+            return res.json()
+        }).then(resp=>{
+            document.querySelector("#qrCode").src = `http://192.168.144.4:8080/${resp.path}`
+        }).catch(err=>{
+            console.log(err)
+        })
+
+        var qrCodeImage = document.getElementById("qrCode");
+        var qrCodeLink = qrCodeImage.src;
+    function getQRCodeLink() {
+        
+        alert("QR Code Link: " + qrCodeLink);
+    }
+</script>

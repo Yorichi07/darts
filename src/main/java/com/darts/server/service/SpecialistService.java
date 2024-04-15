@@ -50,4 +50,11 @@ public class SpecialistService {
     public List<Specialist> getDoctorsBySpeciality(String speciality){
         return speRepo.findAllBySpeciality(speciality);
     }
+
+    //update qr path
+    public Specialist updateSpecialistQrPath(Specialist doc,String qrPath){
+        Specialist newDoc = speRepo.findById(doc.getDocID()).get();
+        newDoc.setQrPath(qrPath);
+        return speRepo.save(newDoc);
+    }
 }

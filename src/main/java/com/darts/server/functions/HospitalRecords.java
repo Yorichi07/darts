@@ -88,14 +88,18 @@ public class HospitalRecords {
 
         // Remove the first index
         doctors.get(doc.getSpeciality()).get(doc.getDocID()).remove(0);
+
+        patDocMap.remove(UID);
     }
 
     public static Integer searchPatNum(Integer UID){
+        if(patDocMap.keySet().contains(UID)){
         int DID = patDocMap.get(UID);
         SpecialistService specialistService = new SpecialistService();
         Specialist doc = specialistService.getOneSpecialist(DID).get();
-        
-        return doctors.get(doc.getSpeciality()).get(doc.getDocID()).indexOf(UID)+1;
+        return doctors.get(doc.getSpeciality()).get(doc.getDocID()).indexOf(UID);
+        }
+        return -2;
     }
 
     
