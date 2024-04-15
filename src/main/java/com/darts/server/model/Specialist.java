@@ -21,9 +21,6 @@ public class Specialist {
     @Column(name = "Speciality")
     private String speciality;
 
-    @Column(name="emergency")
-    private String emergency;
-
     @Column(name = "qrPath")
     private String qrPath;
 
@@ -79,13 +76,5 @@ public class Specialist {
 
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
-    }
-
-    public String getEmergency(){
-        return emergency;
-    }
-
-    public void setEmergency(String emergency){
-        this.emergency=emergency;
     }
 }
