@@ -9,12 +9,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +36,7 @@ import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @PropertySource("classpath:application.properties")
 @RequestMapping("/api/user")
@@ -54,13 +58,23 @@ public class UserController {
     @Autowired
     HospitalService hosSer;
 
-    //private key
+    //private key patient
     @Value("${secrets.secretkey}")
     private String secretKey;
 
+    //Secret Key Doctor
+    @Value("${secrets.secretkeydoc}")
+    private String docSecretKey;
+
+    // Token Class patient
+    TokenClass tkn = new TokenClass(secretKey);
+
+
+    //Token Class Doctor
+    TokenClass docTkn = new TokenClass(docSecretKey);
+
     @GetMapping("/test")
     public String[] test(){
-        TokenClass tkn = new TokenClass(secretKey);
         String[] resp = {tkn.generateToken(498, false),tkn.generateToken(112, false),tkn.generateToken(111, false)};
         return resp;
     }
@@ -74,7 +88,6 @@ public class UserController {
         //Response
         HashMap<String,Object> resp = new HashMap<>();
         // Token Class
-        TokenClass tokenClass = new TokenClass(secretKey);
 
         if(userService.getUserFromUserName(req.get("UserName")).isPresent()){
             resp.put("msg", "User Already Exists");
@@ -101,13 +114,13 @@ public class UserController {
             newUser.setPassword(psswrd);
 
             newUser = userService.createUsers(newUser);
-            String tkn = tokenClass.generateToken(newUser.getUID(),false);
+            String tkns = tkn.generateToken(newUser.getUID(),false);
             
-            String qrPath = CreateQr.generateAndSaveQRCode(tkn, newUser.getUID().toString());
+            String qrPath = CreateQr.generateAndSaveQRCode(tkns, newUser.getUID().toString());
 
             userService.updateUsersQrPath(qrPath, newUser);
 
-            resp.put("token", tkn);
+            resp.put("token", tkns);
             resp.put("msg", "User Created");
             resp.put("qrPath", "http://localhost:8080/"+qrPath);
             return ResponseEntity.status(HttpStatus.OK).body(resp);
@@ -115,14 +128,6 @@ public class UserController {
             resp.put("msg", err);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
-    }
-
-    @GetMapping("/isPatient")
-    public ResponseEntity<HashMap<String,Object>> isPatient(@RequestParam(name = "token") String token) {
-        
-        HashMap<String,Object> resp = new HashMap<>();
-        
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
 
     //Login
@@ -133,6 +138,8 @@ public class UserController {
         PasswordHash psswrdHash = new PasswordHash();
         //response
         HashMap<String,Object> resp = new HashMap<>();
+        //Token class
+        TokenClass tkn = new TokenClass(secretKey);
 
         Optional<Users> user = userService.getUserFromUserName(req.get("UserName"));
         if(!user.isPresent()){
@@ -141,6 +148,7 @@ public class UserController {
         }
 
         if(user.get().getPassword().equals((psswrdHash.getHash(req.get("PassWord"))))){
+            resp.put("token", tkn.generateToken(user.get().getUID(), true));
             resp.put("msg", "Login Sucessfull");
             return ResponseEntity.status(HttpStatus.OK).body(resp);
         }
@@ -212,7 +220,6 @@ public class UserController {
 
         int PID = user.get().getPatient_details().getPatient_id();
         Optional<Patient_details> pd = patientService.getOnePatient_details(PID);
-
         if(!pd.isPresent()){
             resp.put("msg", "Patient details not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
@@ -224,7 +231,6 @@ public class UserController {
         }
 
         resp.put("msg", "Patient details found");
-        resp.put("patientDetails", pd.get());
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
@@ -308,4 +314,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
     }
-}   
+}
