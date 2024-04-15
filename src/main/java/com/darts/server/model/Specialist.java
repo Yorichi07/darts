@@ -27,6 +27,11 @@ public class Specialist {
     @Column(name = "qrPath")
     private String qrPath;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    public String password;
 
     public String getQrPath(){
         return this.qrPath;
@@ -34,6 +39,22 @@ public class Specialist {
 
     public void setQrPath(String qr){
         this.qrPath = qr;
+    }
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    public void setUsername(String usrnm){
+        this.username = usrnm;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+    public void setPassword(String paswrd){
+        this.password = paswrd;
     }
 
     public Integer getDocID() {
