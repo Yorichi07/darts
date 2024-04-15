@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.HospitalRecords;
 import com.darts.server.functions.TokenClass;
+import com.darts.server.model.Patient_details;
 import com.darts.server.model.Specialist;
 import com.darts.server.service.SpecialistService;
 
