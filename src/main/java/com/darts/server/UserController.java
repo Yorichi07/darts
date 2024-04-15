@@ -12,21 +12,24 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
 import com.darts.server.functions.DocAllocation;
+import com.darts.server.functions.NearestHospital;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
+import com.darts.server.model.Hospital;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Specialist;
 import com.darts.server.model.Users;
+import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
@@ -48,16 +51,19 @@ public class UserController {
     @Autowired
     SpecialistService specialistService;
 
+    //Hospital Service
+    @Autowired
+    HospitalService hosSer;
+
     //private key
     @Value("${secrets.secretkey}")
     private String secretKey;
 
     @GetMapping("/test")
-    public String test(){
+    public String[] test(){
         TokenClass tkn = new TokenClass(secretKey);
-        tkn.generateToken(0, false);
-        tkn.generateToken(108, false);
-        return "none";
+        String[] resp = {tkn.generateToken(498, false),tkn.generateToken(112, false),tkn.generateToken(111, false)};
+        return resp;
     }
 
     // Add Users
@@ -84,29 +90,6 @@ public class UserController {
         try{
             // create patient
             Patient_details newPatient = new Patient_details();
-            newPatient.setAddress(req.get("Address"));
-            newPatient.setAllergies(req.get("Allergies"));
-            // get date sql format
-            SimpleDateFormat sdfl = new SimpleDateFormat("dd-MM-yyyy");
-            java.util.Date date = sdfl.parse(req.get("DOB"));
-            Date sqlDate = new Date(date.getTime());
-
-            newPatient.setDate_of_birth(sqlDate);
-            newPatient.setEmail(req.get("Email"));
-            newPatient.setFirst_name(req.get("Name").split(" ")[0]);
-            newPatient.setLast_name(req.get("Name").split(" ")[1]);
-            newPatient.setGender(req.get("Gender"));
-            newPatient.setPhone_number(req.get("PhoneNo"));
-            newPatient.setMedical_conditions(req.get("MedicalCond"));
-            newPatient.setMedications(req.get("Medication"));
-            
-            date = sdfl.parse(req.get("LastAppDate"));
-            sqlDate = new Date(date.getTime());
-            newPatient.setLast_appointment_date(sqlDate);
-
-            newPatient.setEmer_Name(req.get("EmerName"));
-            newPatient.setEmer_Phn(req.get("EmerPhn"));
-            newPatient.setEmer_Rel(req.get("EmerRel"));
 
             newPatient = patientService.createPatient_details(newPatient);
             //set patient to user
@@ -135,6 +118,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/isPatient")
+    public ResponseEntity<HashMap<String,Object>> isPatient(@RequestParam(name = "token") String token) {
+        
+        HashMap<String,Object> resp = new HashMap<>();
+        
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+    }
+
     //Login
     @PostMapping("/userLogin")
     public ResponseEntity<HashMap<String,Object>> userLogin(@RequestBody HashMap<String,String> req){
@@ -157,13 +148,6 @@ public class UserController {
         
         resp.put("msg", "Incorrect Password");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
-    }
-
-    @GetMapping("/formFill")
-    @ResponseBody
-    public String getPatientDetails(@RequestParam(name = "token",required = false) String token){
-
-        return token;
     }
 
     @PostMapping("/docAllocation")
@@ -190,4 +174,137 @@ public class UserController {
         }
     }
 
+    @PostMapping("/nearestHospital")
+    public ResponseEntity<HashMap<String,Object>> findNearestHospital(@RequestBody HashMap<String, Double> req){
+        double curLat = req.get("curLat");
+        double curLong = req.get("curLong");
+
+        NearestHospital nearHos = new NearestHospital(hosSer);
+        List<Hospital> hos = nearHos.getNearestHospital(curLat, curLong);
+
+        HashMap<String,Object> resp = new HashMap<>();
+        if (!hos.isEmpty()) {
+            resp.put("msg", "Nearest hospitals found successfully");
+            resp.put("hospitals", hos); 
+            return ResponseEntity.ok(resp);
+        } else {
+            resp.put("msg", "No hospitals available nearby");
+            return ((BodyBuilder) ResponseEntity.notFound()).body(resp); 
+        }
+    }
+
+    @GetMapping("/checkPatientDetails")
+    public ResponseEntity<HashMap<String,Object>> checkPatientDetails(@RequestParam(name = "token") String token){
+        HashMap<String,Object> resp=new HashMap<>();
+        
+        TokenClass tkn = new TokenClass(secretKey);
+        if(!tkn.verifyToken(token)){
+            resp.put("msg","Invalid Token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
+        }
+
+        int UID=Integer.parseInt(tkn.getPayload());
+    
+        Optional<Users> user=userService.getOneUsers(UID);
+        if(!user.isPresent()){
+            resp.put("msg","User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+
+        int PID = user.get().getPatient_details().getPatient_id();
+        Optional<Patient_details> pd = patientService.getOnePatient_details(PID);
+
+        if(!pd.isPresent()){
+            resp.put("msg", "Patient details not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+
+        if (pd.get().getAddress()==null) {
+            resp.put("msg","Patient Details form is not filled.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        resp.put("msg", "Patient details found");
+        resp.put("patientDetails", pd.get());
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+    @PostMapping("/setPatientDetails")
+    public ResponseEntity<HashMap<String,Object>> setPatientDetails(@RequestBody HashMap<String, Object> req){
+        HashMap<String,Object> resp = new HashMap<>();
+        
+        String token = (String) req.get("token");
+        if (token == null || token.isEmpty()) {
+            resp.put("msg", "Token is missing.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }
+
+        TokenClass tkn = new TokenClass(secretKey);
+        if(!tkn.verifyToken(token)){
+            resp.put("msg","Invalid Token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
+        }
+
+        int UID = Integer.parseInt(tkn.getPayload());
+
+        Optional<Users> userOptional = userService.getOneUsers(UID);
+        if (!userOptional.isPresent()) {
+            resp.put("msg", "User with ID "+UID+" not found." );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+        
+        int PID = userOptional.get().getPatient_details().getPatient_id();
+
+        // Retrieve patient details by PID
+        Optional<Patient_details> patientOptional = patientService.getOnePatient_details(PID);
+        if (!patientOptional.isPresent()) {
+            resp.put("msg", "Patient with ID "+PID+" not found." );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        }
+
+        // Update patient details
+        Patient_details patient = patientOptional.get();
+        patient.setAddress((String) req.get("Address"));
+        patient.setAllergies((String) req.get("Allergies"));
+        try {
+            SimpleDateFormat sdfl = new SimpleDateFormat("dd-MM-yyyy");
+
+            // Parsing Date of Birth
+            java.util.Date dobDate = sdfl.parse((String) req.get("DOB"));
+            Date dobSqlDate = new Date(dobDate.getTime());
+            patient.setDate_of_birth(dobSqlDate);
+
+            patient.setEmail((String) req.get("Email"));
+            String name = (String) req.get("Name");
+            if (name != null && !name.isEmpty()) {
+                String[] nameParts = name.split(" ");
+                if (nameParts.length >= 2) {
+                    patient.setFirst_name(nameParts[0]);
+                    patient.setLast_name(nameParts[1]);
+                }
+            }
+            patient.setGender((String) req.get("Gender"));
+            patient.setPhone_number((String) req.get("PhoneNo"));
+            patient.setMedical_conditions((String) req.get("MedicalCond"));
+            patient.setMedications((String) req.get("Medication"));
+
+            // Parsing Last Appointment Date
+            java.util.Date lastAppDate = sdfl.parse((String) req.get("LastAppDate"));
+            Date lastAppSqlDate = new Date(lastAppDate.getTime());
+            patient.setLast_appointment_date(lastAppSqlDate);
+
+            patient.setEmer_Name((String) req.get("EmerName"));
+            patient.setEmer_Phn((String) req.get("EmerPhn"));
+            patient.setEmer_Rel((String) req.get("EmerRel"));
+            
+            // Save the updated patient details
+            patientService.updatePatient_details(patient);
+            
+            resp.put("msg", "Patient details updated successfully");
+            return ResponseEntity.ok(resp);
+        } catch (Exception e) {
+            resp.put("msg", "Failed to update patient details: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+    }
 }

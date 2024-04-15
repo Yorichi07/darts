@@ -39,7 +39,7 @@ public class WebMvcController implements WebMvcConfigurer{
     @SuppressWarnings("null")
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
-        String path = "file:///C:/college/minor2/darts/src/main/resources/static";
+        String path = "file:///C:/college/minor2/darts/src/main/resources/";
         registry.addResourceHandler("/api/hospital/getPatientDetails")
                 .addResourceLocations(path);
     }
@@ -71,8 +71,7 @@ public class WebMvcController implements WebMvcConfigurer{
                 model.addAttribute("address", patient.getAddress());
             
             // Since we're redirecting, there's no need to return any string here
-                return "patientform";
-            } 
+            return "patientRetrieval/patientR";
         }
 
         return "error";
