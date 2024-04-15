@@ -1,5 +1,6 @@
 package com.darts.server;
 
+import java.rmi.server.UID;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -54,9 +55,8 @@ public class UserController {
     @GetMapping("/test")
     public String test(){
         TokenClass tkn = new TokenClass(secretKey);
-        if(tkn.verifyToken("eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxMDI3IiwiZXhwIjoxNzEyNzMyNjc5fQ.UUDqbh3DwPQAjCtytXYEDRAZpcW7N7Iv7lfF2AG6UtjMKLoirNA_jmwZU4VAtUatKvjHYNdT4tSYxj6VobTXfg")){
-            return tkn.getPayload();
-        }
+        tkn.generateToken(0, false);
+        tkn.generateToken(108, false);
         return "none";
     }
 

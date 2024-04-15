@@ -30,11 +30,9 @@ public class CreateQr {
 
         // Create QR code writer
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
-
-        String payload = "http://localhost:8080/api/pages/getPatientDetails?token="+token;
-
+        
         // Generate BitMatrix
-        BitMatrix bitMatrix = qrCodeWriter.encode(payload, BarcodeFormat.QR_CODE, width, height, hintMap);
+        BitMatrix bitMatrix = qrCodeWriter.encode(token, BarcodeFormat.QR_CODE, width, height, hintMap);
 
         // Create image file
         File qrCodeFile = new File(filePath);
