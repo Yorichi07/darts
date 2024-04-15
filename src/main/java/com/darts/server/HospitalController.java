@@ -5,6 +5,8 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,19 +29,24 @@ public class HospitalController {
     private String secretKey;
 
     @PostMapping("/doctorPunchIn")
-    public Specialist doctorpunchin(@RequestBody HashMap<String, String>req){
+    public ResponseEntity<HashMap<String,String>> doctorpunchin(@RequestBody HashMap<String, String>req){
             TokenClass tkn = new TokenClass(secretKey);
-
+            HashMap<String,String> resp = new HashMap<>();
             if(tkn.verifyToken(req.get("hospitaltkn"))){
                 if(tkn.verifyToken(req.get("doctortkn"))){
                     Integer DID = Integer.parseInt(tkn.getPayload());
                     Specialist sp = specialistService.getOneSpecialist(DID).get();
                     HospitalRecords.insertDoc(sp);
+                    resp.put("msg", "Doctor Punched In");
+                    return ResponseEntity.status(HttpStatus.OK).body(resp);
                 }
             }
-        return null;
+        resp.put("msg", "Doctor Not Valid");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
 
     }
+
+
 }
 
 
