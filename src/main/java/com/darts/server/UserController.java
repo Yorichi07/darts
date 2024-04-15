@@ -1,6 +1,5 @@
 package com.darts.server;
 
-import java.rmi.server.UID;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;

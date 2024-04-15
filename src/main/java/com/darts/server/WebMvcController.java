@@ -74,6 +74,8 @@ public class WebMvcController implements WebMvcConfigurer{
             return "patientRetrieval/patientR";
         }
 
-        return "error";
+        
     }
+    return "error";
+}
 }
