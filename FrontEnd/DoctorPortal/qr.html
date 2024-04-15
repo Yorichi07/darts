@@ -16,3 +16,16 @@
         <a href="./doc.html">Patient Details</a>
         <a href="./qr.html" class="active">QR Code</a>
     </div>
+
+    <img id="qrCode" src="https://example.com/qrcode.png" alt="QR Code">
+    <button onclick="getQRCodeLink()">Get QR Code Link</button>
+    
+</body>
+</html>
+<script>
+    function getQRCodeLink() {
+        var qrCodeImage = document.getElementById("qrCode");
+        var qrCodeLink = qrCodeImage.src;
+        alert("QR Code Link: " + qrCodeLink);
+    }
+</script>
