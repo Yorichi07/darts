@@ -21,12 +21,14 @@ public class Specialist {
     @Column(name = "Speciality")
     private String speciality;
 
-    @Column(name="emergency")
-    private String emergency;
-
     @Column(name = "qrPath")
     private String qrPath;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    public String password;
 
     public String getQrPath(){
         return this.qrPath;
@@ -34,6 +36,22 @@ public class Specialist {
 
     public void setQrPath(String qr){
         this.qrPath = qr;
+    }
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    public void setUsername(String usrnm){
+        this.username = usrnm;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+    public void setPassword(String paswrd){
+        this.password = paswrd;
     }
 
     public Integer getDocID() {
@@ -58,13 +76,5 @@ public class Specialist {
 
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
-    }
-
-    public String getEmergency(){
-        return emergency;
-    }
-
-    public void setEmergency(String emergency){
-        this.emergency=emergency;
     }
 }

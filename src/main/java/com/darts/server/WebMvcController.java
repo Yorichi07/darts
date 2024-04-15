@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.darts.server.functions.TokenClass;
@@ -34,22 +33,17 @@ public class WebMvcController implements WebMvcConfigurer{
     @Value("${secrets.secretkey}")
     private String secretKey;
 
-    //token
-    TokenClass tkn = new TokenClass(secretKey);
-
-    @SuppressWarnings("null")
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry){
-        String path = "file:///C:/college/minor2/darts/src/main/resources/";
-        registry.addResourceHandler("/api/hospital/getPatientDetails")
-                .addResourceLocations(path);
+    @GetMapping("/Signup")
+    public String Signup(){
+        return "qrgen";
     }
 
     @GetMapping("/getPatientDetails")
     public String getPatientDetails(@RequestParam(name = "token",required = false) String token,Model model) {
-
+        TokenClass tkn = new TokenClass(secretKey);
         
-        
+        System.out.println(secretKey);
+        System.out.println(token);
         if(tkn.verifyToken(token)){
             
             Integer UID = Integer.parseInt(tkn.getPayload());

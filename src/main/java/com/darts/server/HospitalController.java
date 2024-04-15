@@ -34,12 +34,21 @@ public class HospitalController {
     @Value("${secrets.secretkey}")
     private String secretKey;
 
+     //Secret Key Doctor
+    @Value("${secrets.secretkeydoc}")
+    private String docSecretKey;
+
+    //Token Class Doctor
+    TokenClass docTkn = new TokenClass(docSecretKey);
+
+    //patient Token
+    TokenClass tkn = new TokenClass(secretKey);
+
     @PostMapping("/doctorPunchIn")
     public ResponseEntity<HashMap<String,String>> doctorpunchin(@RequestBody HashMap<String, String>req){
-            TokenClass tkn = new TokenClass(secretKey);
             HashMap<String,String> resp = new HashMap<>();
-            if(tkn.verifyToken(req.get("hospitaltkn"))){
-                if(tkn.verifyToken(req.get("doctortkn"))){
+            if(docTkn.verifyToken(req.get("hospitaltkn"))){
+                if(docTkn.verifyToken(req.get("doctortkn"))){
                     Integer DID = Integer.parseInt(tkn.getPayload());
                     Specialist sp = specialistService.getOneSpecialist(DID).get();
                     HospitalRecords.insertDoc(sp);
@@ -118,7 +127,14 @@ public class HospitalController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 
-    
+    @GetMapping("/getDocQr")
+    public ResponseEntity<String> getQrPath(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+        if(docTkn.verifyToken(token.split(" ")[1])){
+            int DID = Integer.parseInt(docTkn.getPayload());
+            return ResponseEntity.ok(specialistService.getOneSpecialist(DID).get().getQrPath());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Token");
+    }
 }
 
 

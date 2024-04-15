@@ -23,13 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.darts.server.functions.CreateQr;
-import com.darts.server.functions.DocAllocation;
 import com.darts.server.functions.NearestHospital;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Hospital;
 import com.darts.server.model.Patient_details;
-import com.darts.server.model.Specialist;
 import com.darts.server.model.Users;
 import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
@@ -159,26 +157,26 @@ public class UserController {
 
     @PostMapping("/docAllocation")
     public ResponseEntity<HashMap<String,Object>> allocateDoctor(@RequestBody HashMap<String, Object> req){
-        int urgency = (int) req.get("urgency");
-        String searchTerm = null;
+        // int urgency = (int) req.get("urgency");
+        // String searchTerm = null;
 
-        if (req.containsKey("searchTerm")) {
-            searchTerm = (String) req.get("searchTerm");
-        }
+        // if (req.containsKey("searchTerm")) {
+        //     searchTerm = (String) req.get("searchTerm");
+        // }
 
-        DocAllocation docAllocation = new DocAllocation();
-        List<Specialist> specialists = specialistService.getAllSpecialist();
-        Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency, searchTerm);
+        // List<Specialist> specialists = specialistService.getAllSpecialist();
+        // Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency, searchTerm);
 
-        HashMap<String, Object> resp = new HashMap<>();
-        if (allocatedDoctor != null) {
-            resp.put("msg", "Doctor allocated successfully");
-            resp.put("doctor", allocatedDoctor);
-            return ResponseEntity.status(HttpStatus.OK).body(resp);
-        } else {
-            resp.put("msg", "No doctor available for allocation");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
-        }
+        // HashMap<String, Object> resp = new HashMap<>();
+        // if (allocatedDoctor != null) {
+        //     resp.put("msg", "Doctor allocated successfully");
+        //     resp.put("doctor", allocatedDoctor);
+        //     return ResponseEntity.status(HttpStatus.OK).body(resp);
+        // } else {
+        //     resp.put("msg", "No doctor available for allocation");
+        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
+        // }
+        return null;
     }
 
     @PostMapping("/nearestHospital")
@@ -314,4 +312,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
     }
+    
+    @GetMapping("/getPatientDetails")
+    public ResponseEntity<Patient_details> getPatientDetails(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+
+        if(tkn.verifyToken(token)){
+            int UID =Integer.parseInt(tkn.getPayload());
+            Users usr = userService.getOneUsers(UID).get();
+            Patient_details pat = patientService.getOnePatient_details(usr.getPatient_details().getPatient_id()).get();
+            pat.setUsers(null);
+            return ResponseEntity.ok(pat);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
 }
