@@ -38,13 +38,8 @@ public class WebMvcController implements WebMvcConfigurer{
         return "qrgen";
     }
 
-    @GetMapping("/SignInRedirect")
+    @GetMapping("/patientDashboard")
     public String Patient_details_signin(){
-        return "patientdash";
-    }
-
-    @GetMapping("/SignUpRedirect")
-    public String Patient_details_signup(){
         return "patientdash";
     }
 
