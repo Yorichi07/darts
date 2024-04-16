@@ -3,10 +3,12 @@ package com.darts.server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -33,9 +35,25 @@ public class WebMvcController implements WebMvcConfigurer{
     @Value("${secrets.secretkey}")
     private String secretKey;
 
-    @GetMapping("/Signup")
+    //Secret Key Doctor
+    @Value("${secrets.secretkeydoc}")
+    private String docSecretKey;
+
+    @GetMapping("/docAuth")
     public String Signup(){
-        return "qrgen";
+        return "doctorPortal/Sign";
+    }
+
+    @GetMapping("/getPatient")
+    public String getPatient(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,Model model){
+        if(token == null){
+            return "error";
+        }
+        TokenClass tkn = new TokenClass(docSecretKey);
+        if(tkn.verifyToken(token.split(" ")[1])){
+            int DID = Integer.parseInt(token);
+        }
+        return "error";
     }
 
     @GetMapping("/patientDashboard")
@@ -45,6 +63,9 @@ public class WebMvcController implements WebMvcConfigurer{
 
     @GetMapping("/getPatientDetails")
     public String getPatientDetails(@RequestParam(name = "token",required = false) String token,Model model) {
+        if(token == null){
+            return "error";
+        }
         TokenClass tkn = new TokenClass(secretKey);
         
         System.out.println(secretKey);
@@ -71,6 +92,7 @@ public class WebMvcController implements WebMvcConfigurer{
             // Since we're redirecting, there's no need to return any string here
             return "patientRetrieval/patientR";
         }
+
 
         return "error";
     }

@@ -339,28 +339,35 @@ public class UserController {
     }
 
     @GetMapping("/getQrPath")
-    public ResponseEntity<String> getQrPath(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+    public ResponseEntity<HashMap<String,Object>> getQrPath(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
         // Token Class patient
         TokenClass tkn = new TokenClass(secretKey);
+        HashMap<String,Object> resp = new HashMap<>();
 
         if(tkn.verifyToken(token.split(" ")[1])){
-            return ResponseEntity.ok(userService.getOneUsers(Integer.parseInt(tkn.getPayload())).get().getQrPath());
+            resp.put("path", userService.getOneUsers(Integer.parseInt(tkn.getPayload())).get().getQrPath());
+            return ResponseEntity.ok(resp);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        resp.put("msg", "Invalid Token");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 
     @GetMapping("/patWait")
-    public ResponseEntity<Integer> patWait(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+    public ResponseEntity<HashMap<String,Object>> patWait(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
         TokenClass tkn = new TokenClass(secretKey);
+        HashMap<String,Object> resp = new HashMap<>();
         if(tkn.verifyToken(token.split(" ")[1])){
             int UID = Integer.parseInt(tkn.getPayload());
             int res = HospitalRecords.searchPatNum(UID);
             if (res == -2){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+                resp.put("msg", "No doctors Assigned");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
             }
-            return ResponseEntity.ok(res);
+            resp.put("length", res);
+            return ResponseEntity.ok(resp);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(-3);
+        resp.put("msg", "Invalid Token");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 
 }

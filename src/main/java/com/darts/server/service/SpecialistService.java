@@ -57,4 +57,9 @@ public class SpecialistService {
         newDoc.setQrPath(qrPath);
         return speRepo.save(newDoc);
     }
+
+    //find by username
+    public Optional<Specialist> getDocFromUserName(String userName){
+        return speRepo.findByUsername(userName);
+    }
 }
