@@ -89,6 +89,11 @@ public class WebMvcController implements WebMvcConfigurer{
         return "error";
     }
 
+    @GetMapping("/patientDashboard")
+    public String Patient_details_signin(){
+        return "patientdash";
+    }
+
     @GetMapping("/getPatientDetails")
     public String getPatientDetails(@RequestParam(name = "token",required = false) String token,Model model) {
         if(token == null){
