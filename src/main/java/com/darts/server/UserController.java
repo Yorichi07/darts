@@ -328,7 +328,7 @@ public class UserController {
         // Token Class patient
         TokenClass tkn = new TokenClass(secretKey);
 
-        if(tkn.verifyToken(token)){
+        if(tkn.verifyToken(token.split(" ")[1])){
             int UID =Integer.parseInt(tkn.getPayload());
             Users usr = userService.getOneUsers(UID).get();
             Patient_details pat = patientService.getOnePatient_details(usr.getPatient_details().getPatient_id()).get();
