@@ -3,12 +3,10 @@ package com.darts.server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,6 +16,7 @@ import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Users;
 import com.darts.server.service.Patient_detailsService;
+import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
 
 
@@ -33,6 +32,9 @@ public class WebMvcController implements WebMvcConfigurer{
     @Autowired
     Patient_detailsService patient_detailsService;
 
+    @Autowired
+    SpecialistService specialistService;
+
     @Value("${secrets.secretkey}")
     private String secretKey;
 
@@ -40,9 +42,9 @@ public class WebMvcController implements WebMvcConfigurer{
     @Value("${secrets.secretkeydoc}")
     private String docSecretKey;
 
-    @GetMapping("/Signup")
+    @GetMapping("/docAuth")
     public String Signup(){
-        return "qrgen";
+        return "doctorPortal/Sign";
     }
 
     @GetMapping("/getPatient")
@@ -52,8 +54,22 @@ public class WebMvcController implements WebMvcConfigurer{
         }
         TokenClass tkn = new TokenClass(docSecretKey);
         if(tkn.verifyToken(token)){
-            int DID = Integer.parseInt(token);
-            int UID = HospitalRecords.getPat(DID);
+            int DID = Integer.parseInt(tkn.getPayload());
+            int UID = HospitalRecords.getPat(DID,specialistService);
+            if(UID == -1){
+                model.addAttribute("firstname", "Patient Not Assigned Yet");
+                model.addAttribute("lastname","");
+                model.addAttribute("dateofbirth", "");
+                model.addAttribute("gender", "");
+                model.addAttribute("medical_conditions", "");
+                model.addAttribute("medications", "");
+                model.addAttribute("allergies", "");
+                model.addAttribute("last_appointment_date", "");
+                model.addAttribute("phone_number", "");
+                model.addAttribute("email", "");
+                model.addAttribute("address", "");
+                return "doctorPortal/doc";
+            }
             Patient_details patient = patient_detailsService.getOnePatient_details(userService.getOneUsers(UID).get().getPatient_details().getPatient_id()).get();
 
             model.addAttribute("firstname", patient.getFirst_name());
@@ -68,7 +84,7 @@ public class WebMvcController implements WebMvcConfigurer{
             model.addAttribute("email", patient.getEmail());
             model.addAttribute("address", patient.getAddress());
             
-            return "";
+            return "doctorPortal/doc";
         }
         return "error";
     }
@@ -104,6 +120,7 @@ public class WebMvcController implements WebMvcConfigurer{
             // Since we're redirecting, there's no need to return any string here
             return "patientRetrieval/patientR";
         }
+
 
         return "error";
     }

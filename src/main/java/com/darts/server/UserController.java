@@ -358,7 +358,7 @@ public class UserController {
         HashMap<String,Object> resp = new HashMap<>();
         if(tkn.verifyToken(token.split(" ")[1])){
             int UID = Integer.parseInt(tkn.getPayload());
-            int res = HospitalRecords.searchPatNum(UID);
+            int res = HospitalRecords.searchPatNum(UID,specialistService);
             if (res == -2){
                 resp.put("msg", "No doctors Assigned");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);

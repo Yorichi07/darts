@@ -20,5 +20,8 @@ public interface SpecialistRepository extends CrudRepository<Specialist,Integer>
 
     //to find distinct specialities in the table
     @Query("SELECT DISTINCT s.speciality FROM Specialist s")
-    public Set<String> findDistinctBySpeciality();   
+    public Set<String> findDistinctBySpeciality();  
+    
+    //find doctor by userName
+    public Optional<Specialist> findByUsername(String userName);
 }

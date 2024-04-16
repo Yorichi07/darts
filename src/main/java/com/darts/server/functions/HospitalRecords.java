@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+
 import com.darts.server.model.Specialist;
 import com.darts.server.service.SpecialistService;
 
@@ -71,8 +72,7 @@ public class HospitalRecords {
         return false;
     }
 
-    public static Integer getPat(Integer DID){
-        SpecialistService specialistService = new SpecialistService();
+    public static Integer getPat(Integer DID,SpecialistService specialistService){
         Specialist doc = specialistService.getOneSpecialist(DID).get();
         if(doctors.get(doc.getSpeciality()).get(doc.getDocID()).isEmpty()){
            return -1; 
@@ -81,21 +81,21 @@ public class HospitalRecords {
     }
 
     // Queue delete
-    public static void deletePat(Integer UID){
+    public static void deletePat(Integer UID,SpecialistService specialistService){
         Integer DID = patDocMap.get(UID);
-        SpecialistService specialistService = new SpecialistService();
         Specialist doc = specialistService.getOneSpecialist(DID).get();
 
         // Remove the first index
-        doctors.get(doc.getSpeciality()).get(doc.getDocID()).remove(0);
-
-        patDocMap.remove(UID);
+        if(!doctors.get(doc.getSpeciality()).get(doc.getDocID()).isEmpty()){
+            doctors.get(doc.getSpeciality()).get(doc.getDocID()).remove(0);
+            patDocMap.remove(UID);
+        }
+        
     }
 
-    public static Integer searchPatNum(Integer UID){
+    public static Integer searchPatNum(Integer UID,SpecialistService specialistService){
         if(patDocMap.keySet().contains(UID)){
         int DID = patDocMap.get(UID);
-        SpecialistService specialistService = new SpecialistService();
         Specialist doc = specialistService.getOneSpecialist(DID).get();
         return doctors.get(doc.getSpeciality()).get(doc.getDocID()).indexOf(UID);
         }
