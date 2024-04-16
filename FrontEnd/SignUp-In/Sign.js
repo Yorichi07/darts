@@ -49,7 +49,7 @@ document.getElementById('signUp').addEventListener('click', async()=>{
 		const data = await response.json();
 		document.cookie = data.token;
 		//redirection
-		window.location.href = 'http://localhost:8080/api/pages/SignUpRedirect';
+		window.location.href = 'http://localhost:8080/api/pages/SignInRedirect';
 	}else{
 		const errorMessage = await response.text();
 		console.error('Sign-up failed:', errorMessage);
