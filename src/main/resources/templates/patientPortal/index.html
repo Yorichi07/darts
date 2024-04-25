@@ -70,7 +70,7 @@
 
 	<script>
 	function openPopup(){
-		localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiI0OTgifQ.uQlfGFOeLut5hYFdfKr1xTqqeX0Uw7bGX2ufQhbIxOW3hy1F8aJryAbS3FmDxCeEjGVs6PrBAwsBVLOwZp0tGQ")
+		localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxIn0.lSIvcJrJYPXUjGffrIlGTTomfG0mD8mVFSfSg0eda4l-j_8gmAy3dnZCEx50WyuVWgW9sb_Mk6w4BFHxMPlpxQ")
 		fetch("http://localhost:8080/api/user/getQrPath",{
 			method:"GET",
 			headers:{
@@ -80,6 +80,7 @@
 		}).then(res=>{
 			return res.json()
 		}).then(resp=>{
+			console.log(resp)
 			// Set the src attribute of the qrCode image
 			document.querySelector("#qrCode").src = `http://localhost:8080/${resp.path}`;
 			// Get the src attribute after it's set

@@ -1,11 +1,24 @@
-const signUpButton = document.getElementById('signUp');
-const signInButton = document.getElementById('signIn');
-const container = document.getElementById('container');
-
-signUpButton.addEventListener('click', () => {
-	container.classList.add("right-panel-active");
-});
-
-signInButton.addEventListener('click', () => {
-	container.classList.remove("right-panel-active");
-});
+function login(){
+	fetch("http://192.168.227.4:8080/api/hospital/docLogin",{
+		method:"POST",
+		headers:{
+			"Content-Type":"application/json"
+		},
+		body:JSON.stringify({
+			"UserName":document.querySelectorAll(".inp")[0].value,
+			"PassWord":document.querySelectorAll(".inp")[1].value
+		})
+	}).then(resp=>{
+		return resp.json()
+	}).then(res=>{
+		if(Object.keys(res).includes("token")){
+			window.alert("login sucessfull")
+			localStorage.setItem("token",res.token)
+			location.replace(`http://192.168.227.4:8080/api/pages/getPatient`)
+		}
+		window.alert(res.msg)
+	}).catch(err=>{
+		console.log(err)
+		window.alert(err.msg)
+	})
+}

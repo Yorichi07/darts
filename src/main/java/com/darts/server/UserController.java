@@ -68,12 +68,13 @@ public class UserController {
     private String docSecretKey;
 
     @GetMapping("/test")
-    public String test(){
+    public String[][] test(){
         // Token Class patient
         TokenClass tkn = new TokenClass(docSecretKey);
-        String tk = tkn.generateToken(108, false);
+        TokenClass tks = new TokenClass(secretKey);
+        String[][] tk = {{tkn.generateToken(0, false),tkn.generateToken(1, false),tkn.generateToken(108, false)},{tkn.generateToken(1, false)},{tks.generateToken(1, false)}};
         try {
-            specialistService.updateSpecialistQrPath(specialistService.getOneSpecialist(108).get(), CreateQr.generateAndSaveQRCode(tk,Integer.toString(108),true));
+            CreateQr.generateAndSaveQRCode(tk[2][0], "1", false);
             return tk;
         } catch (WriterException e) {
             // TODO Auto-generated catch block
@@ -310,8 +311,6 @@ public class UserController {
             patient.setEmer_Phn((String) req.get("EmerPhn"));
             patient.setEmer_Rel((String) req.get("EmerRel"));
 
-            System.out.println(req.get("EmerName").toString()+req.get("EmerPhn").toString()+req.get("EmerRel").toString());
-            
             // Save the updated patient details
             patientService.updatePatient_details(patient);
             
@@ -328,7 +327,7 @@ public class UserController {
         // Token Class patient
         TokenClass tkn = new TokenClass(secretKey);
 
-        if(tkn.verifyToken(token)){
+        if(tkn.verifyToken(token.split(" ")[1])){
             int UID =Integer.parseInt(tkn.getPayload());
             Users usr = userService.getOneUsers(UID).get();
             Patient_details pat = patientService.getOnePatient_details(usr.getPatient_details().getPatient_id()).get();
@@ -358,7 +357,7 @@ public class UserController {
         HashMap<String,Object> resp = new HashMap<>();
         if(tkn.verifyToken(token.split(" ")[1])){
             int UID = Integer.parseInt(tkn.getPayload());
-            int res = HospitalRecords.searchPatNum(UID);
+            int res = HospitalRecords.searchPatNum(UID,specialistService);
             if (res == -2){
                 resp.put("msg", "No doctors Assigned");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);

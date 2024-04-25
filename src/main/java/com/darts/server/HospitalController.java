@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.darts.server.functions.HospitalRecords;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
-import com.darts.server.model.Patient_details;
 import com.darts.server.model.Specialist;
 import com.darts.server.service.SpecialistService;
 
@@ -41,19 +40,16 @@ public class HospitalController {
     @Value("${secrets.secretkeydoc}")
     private String docSecretKey;
 
-    
 
     @PostMapping("/doctorPunchIn")
     public ResponseEntity<HashMap<String,String>> doctorpunchin(@RequestBody HashMap<String, String>req){
-            //patient Token
-            TokenClass tkn = new TokenClass(secretKey);
             //Token Class Doctor
             TokenClass docTkn = new TokenClass(docSecretKey);
 
             HashMap<String,String> resp = new HashMap<>();
             if(docTkn.verifyToken(req.get("hospitaltkn"))){
                 if(docTkn.verifyToken(req.get("doctortkn"))){
-                    Integer DID = Integer.parseInt(tkn.getPayload());
+                    Integer DID = Integer.parseInt(docTkn.getPayload());
                     Specialist sp = specialistService.getOneSpecialist(DID).get();
                     HospitalRecords.insertDoc(sp);
                     resp.put("msg", "Doctor Punched In");
@@ -100,6 +96,7 @@ public class HospitalController {
             Specialist doc = specialistService.getOneSpecialist(Integer.parseInt(DID)).get();
             HospitalRecords.insertPatDoc(Integer.parseInt(tkn.getPayload()), doc);
             resp.put("msg", "Doctor assigned");
+            return ResponseEntity.ok(resp);
         }
         resp.put("msg", "Unauthorized");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
@@ -112,7 +109,7 @@ public class HospitalController {
 
         if(tkn.verifyToken(token.split(" ")[1])){
             int UID = Integer.parseInt(tkn.getPayload());
-            HospitalRecords.insertPat(UID, speciality);
+            HospitalRecords.insertPat(UID, speciality,specialistService);
             resp.put("msg", "Doctor Assigned");
             return ResponseEntity.ok(resp);
         }
