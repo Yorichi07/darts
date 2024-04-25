@@ -25,7 +25,7 @@ document.getElementById('signIn').addEventListener('click', async()=>{
 		const data = await response.json();
 		document.cookie = data.token;
 		//redirection
-		window.location.href = 'http://localhost:8080/api/pages/SignInRedirect';
+		window.location.href = 'http://localhost:8080/api/pages/patientDashboard';
 	}else{
 		const errorMessage = await response.text();
 		console.error('Sign-in failed:', errorMessage);
@@ -49,7 +49,7 @@ document.getElementById('signUp').addEventListener('click', async()=>{
 		const data = await response.json();
 		document.cookie = data.token;
 		//redirection
-		window.location.href = 'http://localhost:8080/api/pages/SignInRedirect';
+		window.location.href = 'http://localhost:8080/api/pages/patientDashboard';
 	}else{
 		const errorMessage = await response.text();
 		console.error('Sign-up failed:', errorMessage);

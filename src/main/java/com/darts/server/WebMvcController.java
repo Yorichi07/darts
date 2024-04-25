@@ -58,7 +58,7 @@ public class WebMvcController implements WebMvcConfigurer{
 
     @GetMapping("/patientDashboard")
     public String Patient_details_signin(){
-        return "patientdash";
+        return "patientPortal/patientdash";
     }
 
     @GetMapping("/getPatientDetails")
