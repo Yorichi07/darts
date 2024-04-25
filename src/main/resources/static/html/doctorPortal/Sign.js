@@ -1,5 +1,5 @@
 function login(){
-	fetch("http://192.168.144.4:8080/api/user/userLogin",{
+	fetch("http://192.168.227.4:8080/api/hospital/docLogin",{
 		method:"POST",
 		headers:{
 			"Content-Type":"application/json"
@@ -11,8 +11,14 @@ function login(){
 	}).then(resp=>{
 		return resp.json()
 	}).then(res=>{
-		localStorage.setItem("token",res.token)
+		if(Object.keys(res).includes("token")){
+			window.alert("login sucessfull")
+			localStorage.setItem("token",res.token)
+			location.replace(`http://192.168.227.4:8080/api/pages/getPatient`)
+		}
+		window.alert(res.msg)
 	}).catch(err=>{
+		console.log(err)
 		window.alert(err.msg)
 	})
 }

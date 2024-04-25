@@ -1,9 +1,11 @@
 package com.darts.server.functions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server.Spec;
 
 import com.darts.server.model.Specialist;
 import com.darts.server.service.SpecialistService;
@@ -11,7 +13,7 @@ import com.darts.server.service.SpecialistService;
 public class HospitalRecords {
 
     public static HashMap<String,HashMap<Integer,List<Integer>>> doctors =  new HashMap<>();
-    public static HashMap<Integer,Integer> patDocMap;
+    public static HashMap<Integer,Integer> patDocMap = new HashMap<>();
 
     public static boolean insertDoc(Specialist doc){
         if(doctors.keySet().contains(doc.getSpeciality())){
@@ -19,12 +21,12 @@ public class HospitalRecords {
                 System.out.println(doctors.toString());
                 return false;
             }
-            doctors.get(doc.getSpeciality()).put(doc.getDocID(), List.of());
+            doctors.get(doc.getSpeciality()).put(doc.getDocID(), new ArrayList<>(List.of()));
             System.out.println(doctors.toString());
             return true;
         }
         doctors.put(doc.getSpeciality(),new HashMap<Integer,List<Integer>>());
-        doctors.get(doc.getSpeciality()).put(doc.getDocID(), List.of());
+        doctors.get(doc.getSpeciality()).put(doc.getDocID(), new ArrayList<>(List.of()));
         System.out.println(doctors.toString());
         return true;
     }
@@ -48,13 +50,14 @@ public class HospitalRecords {
             if(doctors.get(doc.getSpeciality()).containsKey(doc.getDocID())){
                 doctors.get(doc.getSpeciality()).get(doc.getDocID()).add(UID);
                 patDocMap.put(UID, doc.getDocID());
+                System.out.println(doctors.toString());
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean insertPat(Integer UID, String speciality){
+    public static boolean insertPat(Integer UID, String speciality,SpecialistService specialistService){
         if(doctors.containsKey(speciality)){
             if(!doctors.get(speciality).keySet().isEmpty()){
                 Integer DID = doctors.get(speciality).keySet().iterator().next();
@@ -65,7 +68,10 @@ public class HospitalRecords {
                         DID = did;
                     }
                 }
+                Specialist doc = specialistService.getOneSpecialist(DID).get();
+                doctors.get(doc.getSpeciality()).get(doc.getDocID()).add(UID);
                 patDocMap.put(UID, DID);
+                System.out.println(doctors.toString());
                 return true;
             }
         }

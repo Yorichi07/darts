@@ -47,46 +47,15 @@ public class WebMvcController implements WebMvcConfigurer{
         return "doctorPortal/Sign";
     }
 
-    @GetMapping("/getPatient")
-    public String getPatient(@RequestParam(name = "token",required = false) String token,Model model){
-        if(token == null){
-            return "error";
-        }
-        TokenClass tkn = new TokenClass(docSecretKey);
-        if(tkn.verifyToken(token)){
-            int DID = Integer.parseInt(tkn.getPayload());
-            int UID = HospitalRecords.getPat(DID,specialistService);
-            if(UID == -1){
-                model.addAttribute("firstname", "Patient Not Assigned Yet");
-                model.addAttribute("lastname","");
-                model.addAttribute("dateofbirth", "");
-                model.addAttribute("gender", "");
-                model.addAttribute("medical_conditions", "");
-                model.addAttribute("medications", "");
-                model.addAttribute("allergies", "");
-                model.addAttribute("last_appointment_date", "");
-                model.addAttribute("phone_number", "");
-                model.addAttribute("email", "");
-                model.addAttribute("address", "");
-                return "doctorPortal/doc";
-            }
-            Patient_details patient = patient_detailsService.getOnePatient_details(userService.getOneUsers(UID).get().getPatient_details().getPatient_id()).get();
+    @GetMapping("/docQrCode")
+    public String docQrCode(){
+        return "doctorPortal/qr";
+    }
 
-            model.addAttribute("firstname", patient.getFirst_name());
-            model.addAttribute("lastname",patient.getLast_name());
-            model.addAttribute("dateofbirth", patient.getDate_of_birth());
-            model.addAttribute("gender", patient.getGender());
-            model.addAttribute("medical_conditions", patient.getMedical_conditions());
-            model.addAttribute("medications", patient.getMedications());
-            model.addAttribute("allergies", patient.getAllergies());
-            model.addAttribute("last_appointment_date", patient.getLast_appointment_date());
-            model.addAttribute("phone_number", patient.getPhone_number());
-            model.addAttribute("email", patient.getEmail());
-            model.addAttribute("address", patient.getAddress());
-            
-            return "doctorPortal/doc";
-        }
-        return "error";
+    @GetMapping("/getPatient")
+    public String getPatient(Model model){
+        model.addAttribute("firstname", "Patient Not Assigned Yet");
+        return "doctorPortal/doc";
     }
 
     @GetMapping("/patientDashboard")
@@ -100,16 +69,13 @@ public class WebMvcController implements WebMvcConfigurer{
             return "error";
         }
         TokenClass tkn = new TokenClass(secretKey);
-        
-        System.out.println(secretKey);
-        System.out.println(token);
         if(tkn.verifyToken(token)){
-            
             Integer UID = Integer.parseInt(tkn.getPayload());
             Users usr = userService.getOneUsers(UID).get();
             Integer patient_Id = usr.getPatient_details().getPatient_id();
+
             Patient_details patient = patient_detailsService.getOnePatient_details(patient_Id).get();
-            
+
             model.addAttribute("firstname", patient.getFirst_name());
             model.addAttribute("lastname",patient.getLast_name());
             model.addAttribute("dateofbirth", patient.getDate_of_birth());
@@ -121,6 +87,9 @@ public class WebMvcController implements WebMvcConfigurer{
             model.addAttribute("phone_number", patient.getPhone_number());
             model.addAttribute("email", patient.getEmail());
             model.addAttribute("address", patient.getAddress());
+            model.addAttribute("emer_name", patient.getEmer_name());
+            model.addAttribute("emer_rel", patient.getEmer_Rel());
+            model.addAttribute("emer_phn", patient.getEmer_Phn());
             
             // Since we're redirecting, there's no need to return any string here
             return "patientRetrieval/patientR";

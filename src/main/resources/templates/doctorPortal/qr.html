@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="robots" content="INDEX,FOLLOW" />
     <title>Doctor Portal</title>
-    <link rel="icon" href="http://192.168.202.4:8080/html/doctorPortal/title-logo.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="http://192.168.202.4:8080/html/doctorPortal/qr.css" />
+    <link rel="icon" href="http://192.168.227.4:8080/html/doctorPortal/title-logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="http://192.168.227.4:8080/html/doctorPortal/qr.css" />
 </head>
 
 <body>
@@ -25,7 +25,7 @@
 </html>
 <script>
     localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxMDgifQ.nxpq4eM9PVVnb1yOiLchK3aAQeVkraAfGcAqM-20ln2nTK138urDtBUUxU6My99ko4zFALr5VyhJuOADwHsXnA")
-    fetch("http://192.168.144.4:8080/api/hospital/getQrPath",{
+    fetch("http://192.168.227.4:8080/api/hospital/getQrPath",{
             method:"GET",
             headers:{
                 "Content-Type":"application/json",
@@ -34,7 +34,7 @@
         }).then(res=>{
             return res.json()
         }).then(resp=>{
-            document.querySelector("#qrCode").src = `http://192.168.144.4:8080/${resp.path}`
+            document.querySelector("#qrCode").src = `http://192.168.227.4:8080/${resp.path}`
         }).catch(err=>{
             console.log(err)
         })
