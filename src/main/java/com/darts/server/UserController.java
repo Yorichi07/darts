@@ -68,22 +68,10 @@ public class UserController {
     private String docSecretKey;
 
     @GetMapping("/test")
-    public String[][] test(){
+    public String test(){
         // Token Class patient
-        TokenClass tkn = new TokenClass(docSecretKey);
         TokenClass tks = new TokenClass(secretKey);
-        String[][] tk = {{tkn.generateToken(0, false),tkn.generateToken(1, false),tkn.generateToken(108, false)},{tkn.generateToken(1, false)},{tks.generateToken(1, false)}};
-        try {
-            CreateQr.generateAndSaveQRCode(tk[2][0], "1", false);
-            return tk;
-        } catch (WriterException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
+        return tks.generateToken(1, false);
     }
 
     // Add Users
