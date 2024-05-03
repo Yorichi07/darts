@@ -18,9 +18,4 @@ public class PasswordHash {
             return "500";
         }
     }
-
-    public boolean checkHash(String psswrd){
-        return false;
-    }
-
 }

@@ -101,6 +101,4 @@ public class HospitalRecords {
         }
         return -2;
     }
-
-    
 }
