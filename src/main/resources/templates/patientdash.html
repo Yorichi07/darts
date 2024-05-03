@@ -303,7 +303,7 @@
 
         // Fetch QR code path from the server and display it in the QR popup
         localStorage.setItem("token", "eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiI0OTgifQ.uQlfGFOeLut5hYFdfKr1xTqqeX0Uw7bGX2ufQhbIxOW3hy1F8aJryAbS3FmDxCeEjGVs6PrBAwsBVLOwZp0tGQ");
-        fetch("http://192.168.227.4:8080/api/user/getQrPath", {
+        fetch("http://localhost:8080/api/user/getQrPath", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -314,7 +314,7 @@
         .then(resp => {
             // Set the QR code source
             console.log(resp)
-            document.querySelector("#qrImage").src = `http://192.168.227.4:8080/${resp.path}`;
+            document.querySelector("#qrImage").src = `http://localhost:8080/${resp.path}`;
         })
         .catch(err => {
             console.error("Error fetching QR code path:", err);
