@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.darts.server.functions.HospitalRecords;
 import com.darts.server.functions.TokenClass;
 import com.darts.server.model.Patient_details;
 import com.darts.server.model.Users;
@@ -50,6 +49,11 @@ public class WebMvcController implements WebMvcConfigurer{
     @GetMapping("/docQrCode")
     public String docQrCode(){
         return "doctorPortal/qr";
+    }
+
+    @GetMapping("/scanQr")
+    public String scanQr(){
+        return "qrgen";
     }
 
     @GetMapping("/getPatient")

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.darts.server.functions.HospitalRecords;
 import com.darts.server.functions.PasswordHash;
 import com.darts.server.functions.TokenClass;
+import com.darts.server.model.Patient_details;
 import com.darts.server.model.Specialist;
+import com.darts.server.model.Users;
+import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
+import com.darts.server.service.UserService;
 
 @CrossOrigin(origins = "*")
 @PropertySource("classpath:application.properties")
@@ -32,6 +37,12 @@ public class HospitalController {
 
     @Autowired
     SpecialistService specialistService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    Patient_detailsService patient_detailsService;
     
     @Value("${secrets.secretkey}")
     private String secretKey;
@@ -167,6 +178,29 @@ public class HospitalController {
         }
         
         resp.put("msg", "Incorrect Password");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
+    }
+
+    @GetMapping("/getNextPat")
+    public ResponseEntity<HashMap<String,Object>> getNextPat(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
+        TokenClass tokenClass = new TokenClass(docSecretKey);
+        HashMap<String,Object> resp = new HashMap<>();
+
+        if(tokenClass.verifyToken(token.split(" ")[1])){
+            int DID = Integer.parseInt(tokenClass.getPayload());
+            int UID = HospitalRecords.getPat(DID, specialistService);
+            if(UID == -1){
+                resp.put("msg", "No patient Assigned");
+                return ResponseEntity.ok(resp);
+            }
+            Users users = userService.getOneUsers(UID).get();
+            Patient_details pat = patient_detailsService.getOnePatient_details(users.getPatient_details().getPatient_id()).get();
+            pat.setUsers(null);
+            resp.put("msg", "patient fetched");
+            resp.put("patient", pat);
+            return ResponseEntity.ok(resp);
+        }
+        resp.put("msg", "Unauthorized");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
     }
 }

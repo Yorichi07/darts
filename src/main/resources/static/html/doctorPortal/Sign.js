@@ -14,7 +14,7 @@ function login(){
 		if(Object.keys(res).includes("token")){
 			window.alert("login sucessfull")
 			localStorage.setItem("token",res.token)
-			location.replace(`http://192.168.227.4:8080/api/pages/getPatient`)
+			location.replace(`http://192.168.227.4:8080/api/pages/docQrCode`)
 		}
 		window.alert(res.msg)
 	}).catch(err=>{

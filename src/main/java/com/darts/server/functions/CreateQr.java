@@ -41,7 +41,7 @@ public class CreateQr {
         String payload = "http://192.168.144.4:8080/api/pages/getPatientDetails?token="+token;
 
         // Generate BitMatrix
-        BitMatrix bitMatrix = qrCodeWriter.encode(payload, BarcodeFormat.QR_CODE, width, height, hintMap);
+        BitMatrix bitMatrix = qrCodeWriter.encode(token, BarcodeFormat.QR_CODE, width, height, hintMap);
 
         // Create image file
         File qrCodeFile = new File(filePath);
