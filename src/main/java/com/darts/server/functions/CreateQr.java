@@ -26,26 +26,30 @@ public class CreateQr {
 
         int width = 300;
         int height = 300;
-        String filePath;
+        String filePath,flpth;
         if(!isDoc){
             filePath = "./build/resources/main/static/qrs/user/"+UID+".png";
+            flpth = "./src/main/resources/static/qrs/user/"+UID+".png";
         }else{
             filePath = "./build/resources/main/static/qrs/docs/"+UID+".png";
+            flpth = "./src/main/resources/static/qrs/user/"+UID+".png";
         }
 
         // Create QR code writer
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
-        String payload = "http://192.168.56.1:8080/api/pages/getPatientDetails?token="+token;
+        String payload = "http://192.168.144.4:8080/api/pages/getPatientDetails?token="+token;
 
         // Generate BitMatrix
         BitMatrix bitMatrix = qrCodeWriter.encode(payload, BarcodeFormat.QR_CODE, width, height, hintMap);
 
         // Create image file
         File qrCodeFile = new File(filePath);
+        File qrcodeFilen = new File(flpth);
 
         // Write to file
         MatrixToImageWriter.writeToFile(bitMatrix, "PNG", qrCodeFile);
+        MatrixToImageWriter.writeToFile(bitMatrix, "PNG", qrcodeFilen);
         if(isDoc){
             return "qrs/docs/"+UID+".png";
         }

@@ -6,7 +6,7 @@
 }
 body {
   font-family: 'Inter', sans-serif;
-  background-image: url(http://192.168.202.4:8080/html/patientRetrieval/backgroundsignup.jpg);
+  background-image: url(http://192.168.144.4:8080/html/patientRetrieval/backgroundsignup.jpg);
   background-size:cover;
   background-repeat: no-repeat;
 }
