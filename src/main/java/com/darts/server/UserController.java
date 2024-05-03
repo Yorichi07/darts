@@ -1,6 +1,5 @@
 package com.darts.server;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
-import com.google.zxing.WriterException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -152,30 +150,6 @@ public class UserController {
         
         resp.put("msg", "Incorrect Password");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);
-    }
-
-    @PostMapping("/docAllocation")
-    public ResponseEntity<HashMap<String,Object>> allocateDoctor(@RequestBody HashMap<String, Object> req){
-        // int urgency = (int) req.get("urgency");
-        // String searchTerm = null;
-
-        // if (req.containsKey("searchTerm")) {
-        //     searchTerm = (String) req.get("searchTerm");
-        // }
-
-        // List<Specialist> specialists = specialistService.getAllSpecialist();
-        // Specialist allocatedDoctor = docAllocation.allocateDoc(specialists, urgency, searchTerm);
-
-        // HashMap<String, Object> resp = new HashMap<>();
-        // if (allocatedDoctor != null) {
-        //     resp.put("msg", "Doctor allocated successfully");
-        //     resp.put("doctor", allocatedDoctor);
-        //     return ResponseEntity.status(HttpStatus.OK).body(resp);
-        // } else {
-        //     resp.put("msg", "No doctor available for allocation");
-        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resp);
-        // }
-        return null;
     }
 
     @PostMapping("/nearestHospital")

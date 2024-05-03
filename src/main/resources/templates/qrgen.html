@@ -110,7 +110,23 @@ video {
  
     // If found you qr code
         function onScanSuccess(decodeText, decodeResult) {
-             alert("You Qr is : " + decodeText, decodeResult);
+             alert("QR scanned");
+             fetch("http://192.168.8.4:8080/api/hospital/doctorPunchIn",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    "hospitaltkn":localStorage.getItem("token"),
+                    "doctortkn":decodeText
+                })
+             }).then(resp=>{
+                return resp.json()
+             }).then(res=>{
+                window.alert(res.msg)
+             }).catch(err=>{
+                console.log(err)
+             })
         }
  
         let htmlscanner = new Html5QrcodeScanner(

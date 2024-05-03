@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server.Spec;
-
 import com.darts.server.model.Specialist;
 import com.darts.server.service.SpecialistService;
 
@@ -14,6 +12,7 @@ public class HospitalRecords {
 
     public static HashMap<String,HashMap<Integer,List<Integer>>> doctors =  new HashMap<>();
     public static HashMap<Integer,Integer> patDocMap = new HashMap<>();
+    public static ArrayList<Integer> unassign = new ArrayList<>();
 
     public static boolean insertDoc(Specialist doc){
         if(doctors.keySet().contains(doc.getSpeciality())){
@@ -107,6 +106,5 @@ public class HospitalRecords {
         }
         return -2;
     }
-
     
 }

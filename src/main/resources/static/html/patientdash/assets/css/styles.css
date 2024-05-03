@@ -1,0 +1,165 @@
+
+
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+@font-face{
+	src: url(../fonts/OpenSans-Regular.ttf);
+	font-family: opensans;
+}
+
+@font-face{
+	src: url(../fonts/DancingScript-VariableFont_wght.ttf);
+	font-family: dancingscript;
+}
+
+@font-face{
+	src: url(../fonts/AmaticSC-Regular.ttf);
+	font-family: amatic;
+}
+
+@font-face{
+	src: url(../fonts/SpecialElite-Regular.ttf);
+	font-family: specialelite;
+}
+
+@font-face{
+	src: url(../fonts/Yellowtail-Regular.ttf);
+	font-family: yellowtail;
+}
+
+@font-face{
+	src: url(../fonts/Segoe-UI.ttf);
+	font-family: segoe;
+}
+
+@font-face{
+	src: url(../fonts/Segoe-UI-Bold.ttf);
+	font-family: segoebold;
+}
+
+body{
+
+	font-family: opensans;
+	font-size: 16px;
+	margin:0px;
+	padding:0px;
+	word-break: break-word;
+	word-wrap: break-word;
+}
+
+		
+.class_1{
+
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	
+}
+
+.class_2{
+
+	width: 100vw;
+	 background-color: rgb(255, 255, 255);
+	
+}
+
+.class_3{
+
+	width: 816.827%;
+	padding: 10px;
+	color: rgb(45, 45, 45);
+	max-width: 800px;
+	margin: auto;
+	text-align: center;
+	left: 266.173%;
+	
+}
+
+.class_4{
+
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 40px;
+	
+}
+
+.class_5{
+
+	padding: 5px;
+	
+}
+
+.class_6{
+
+	width: 395px;
+	height: 429px;
+	object-fit: cover;
+	
+}
+
+.class_7{
+
+	width: 100vw;
+	 background-color: rgb(234, 234, 234);
+	padding: 20px;
+	
+}
+
+.class_8{
+
+	padding: 10px;
+	 color: rgb(255, 255, 255);
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	
+}
+
+.class_9{
+
+	width: 350px;
+	height: 400px;
+	padding: 20px;
+	background-color: rgb(255, 255, 255);
+	color: rgb(125, 125, 125);
+	border-radius: 30px;
+	text-align: center;
+	box-shadow: rgb(122, 122, 122) 1px 1px 30px;
+	margin: 10px;
+	
+}
+
+.class_10{
+
+	width: 100%;
+	height: 254px;
+	object-fit: cover;
+	border-radius: 30px;
+	
+}
+
+.class_11{
+
+	padding-left: 10px;
+	padding-right: 10px;
+	color: rgb(28, 28, 28);
+	
+}
+
+@media screen and (max-width: 1200px){
+
+}
+
+@media screen and (max-width: 992px){
+
+}
+
+@media screen and (max-width: 768px){
+
+}
+
+@media screen and (max-width: 576px){
+
+}

@@ -51,6 +51,11 @@ public class WebMvcController implements WebMvcConfigurer{
         return "doctorPortal/qr";
     }
 
+    @GetMapping("/scanQr")
+    public String scanQr(){
+        return "qrgen";
+    }
+
     @GetMapping("/getPatient")
     public String getPatient(Model model){
         model.addAttribute("firstname", "Patient Not Assigned Yet");

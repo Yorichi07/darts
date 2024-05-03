@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Untitled</title>
+	<link rel="stylesheet" type="text/css" href="http://localhost:8080/html/patientdash/assets/css/bootstrap-icons.css">
+	<link rel="stylesheet" type="text/css" href="http://localhost:8080/html/patientdash/assets/css/styles.css?1091">
+</head>
+<body>
+
+	
+	<grammarly-extension data-grammarly-shadow-root="true" class="dnXmp class_1">
+	</grammarly-extension>
+	<grammarly-extension data-grammarly-shadow-root="true" class="dnXmp class_1">
+	</grammarly-extension>
+	<grammarly-extension data-grammarly-shadow-root="true" class="dnXmp class_1">
+	</grammarly-extension>
+	<grammarly-extension data-grammarly-shadow-root="true" class="dnXmp class_1">
+	</grammarly-extension>
+	<section class="class_2" >
+		<div class="class_3" >
+			<h1 class="class_4"   spellcheck="false">
+				Patient Dashboard
+				<br >
+			</h1>
+			<div class="class_5"   spellcheck="false">
+				Patient dashboard to save all your data!
+			</div>
+			<img src="http://localhost:8080/html/patientdash/assets/images/site-stats-concept-illustration_114360-1434.webp" class="class_6" >
+		</div>
+	</section>
+	<section class="class_7" >
+		<div class="class_8" >
+			<div class="class_9">
+				<img src="http://localhost:8080/html/patientdash/assets/images/surprised-happy-girl-pointing-left-recommend-product-advertisement-make-okay-gesture_176420-20191.jpg" class="class_10" >
+				<h1 class="class_11"  >
+					Patient QR code
+					<button onclick="openPopup()">Click me!</button>
+				</h1>
+			</div>
+			<div class="class_9" >
+				<img src="http://localhost:8080/html/patientdash/assets/images/beautiful-happy-african-american-woman-has-surprised-joyful-expression-cannot-believe-sudden-success-dressed-casual-white-jumper_273609-43273.jpg" class="class_10" >
+				<h1 class="class_11"  >
+					Patient details
+				</h1>
+			</div>
+			<div class="class_9" >
+				<img src="http://localhost:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg" class="class_10" >
+				<h1 class="class_11"  >
+					Current Wait Time
+				</h1>
+			</div>
+			<div class="class_9" >
+				<img src="http://localhost:8080/html/patientdash/assets/images/close-up-portrait-attractive-man-with-afro-hairstyle-stubble-wears-orange-anorak_273609-8595.jpg" class="class_10" >
+				<h1 class="class_11"  >
+					Bed Status
+				</h1>
+			</div>
+			<div class="class_9" >
+				<img src="http://localhost:8080/html/patientdash/assets/images/curly-man-with-broad-smile-shows-perfect-teeth-being-amused-by-interesting-talk-has-bushy-curly-dark-hair-stands-indoor-against-white-blank-wall_273609-17092.jpg" class="class_10" >
+				<h1 class="class_11"  >
+					Doctor assigned
+				</h1>
+			</div>
+		</div>
+
+		<img id="qrCode" style="display: none;">
+	</section>
+
+	<script>
+	function openPopup(){
+		localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxIn0.lSIvcJrJYPXUjGffrIlGTTomfG0mD8mVFSfSg0eda4l-j_8gmAy3dnZCEx50WyuVWgW9sb_Mk6w4BFHxMPlpxQ")
+		fetch("http://localhost:8080/api/user/getQrPath",{
+			method:"GET",
+			headers:{
+				"Content-Type":"application/json",
+				"Authorization":`Bearer ${localStorage.getItem("token")}`
+			},
+		}).then(res=>{
+			return res.json()
+		}).then(resp=>{
+			console.log(resp)
+			// Set the src attribute of the qrCode image
+			document.querySelector("#qrCode").src = `http://localhost:8080/${resp.path}`;
+			// Get the src attribute after it's set
+			var qrCodeImage = document.getElementById("qrCode");
+			var qrCodeLink = qrCodeImage.src;
+			// Open the popup window
+			var popupWindow = window.open("", "QRCodeWindow", "width=400, height=400");
+			popupWindow.document.write('<img src = "' + qrCodeLink + '">');
+		}).catch(err=>{
+			console.log(err)
+		})
+	}
+</script>
+
+	
+</body>
+</html>

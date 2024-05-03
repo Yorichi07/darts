@@ -13,7 +13,7 @@
 
 <body>
     <div class="navbar">
-        <a href="./doc.html" class="active">Patient Details</a>
+        <a class="active">Patient Details</a>
         <a href="http://192.168.227.4:8080/api/pages/docQrCode">QR Code</a>
     </div>
     <div class="formbold-main-wrapper">
@@ -24,7 +24,7 @@
                         First Name
                     </label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${firstname}">text box</div>
+                        <div class="text-container" th:text="${firstname}"></div>
                     </div>
                 </div>
 
@@ -33,21 +33,21 @@
                         Last Name
                     </label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${lastname}">text box</div>
+                        <div class="text-container" th:text="${lastname}"></div>
                     </div>
                 </div>
 
                 <div>
                     <label for="email" class="formbold-form-label"> Email </label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${email}">text box</div>
+                        <div class="text-container" th:text="${email}"></div>
                     </div>
                 </div>
 
                 <div>
                     <label for="gender" class="formbold-form-label">Gender</label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${gender}">text box</div>
+                        <div class="text-container" th:text="${gender}"></div>
                     </div>
                 </div>
 
@@ -55,7 +55,6 @@
                     <label for="phone" class="formbold-form-label"> Phone </label>
                     <div class="output-box">
                         <div class="text-container" th:text="${phone_number}">
-                            text box
                         </div>
                     </div>
                 </div>
@@ -64,7 +63,6 @@
                     <label for="dob" class="formbold-form-label"> Date of Birth</label>
                     <div class="output-box">
                         <div class="text-container" th:text="${dateofbirth}">
-                            text box
                         </div>
                     </div>
                 </div>
@@ -72,7 +70,7 @@
                 <div>
                     <label for="address" class="formbold-form-label"> Address </label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${address}">text box</div>
+                        <div class="text-container" th:text="${address}"></div>
                     </div>
                 </div>
 
@@ -80,7 +78,7 @@
                     <label for="allergies" class="formbold-form-label">
                         Allergies</label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${allergies}">text box</div>
+                        <div class="text-container" th:text="${allergies}"></div>
                     </div>
                 </div>
 
@@ -88,7 +86,6 @@
                     <label for="lad" class="formbold-form-label">Last Appointment Date</label>
                     <div class="output-box">
                         <div class="text-container" th:text="${last_appointment_date}">
-                            text box
                         </div>
                     </div>
                 </div>
@@ -97,7 +94,6 @@
                     <label for="medications" class="formbold-form-label">Medications</label>
                     <div class="output-box">
                         <div class="text-container" th:text="${medications}">
-                            text box
                         </div>
                     </div>
                 </div>
@@ -106,7 +102,6 @@
                     <label for="medical conditon" class="formbold-form-label">Medical Conditon</label>
                     <div class="output-box">
                         <div class="text-container" th:text="${medical_conditions}">
-                            text box
                         </div>
                     </div>
                 </div>
@@ -114,29 +109,53 @@
                 <div>
                     <label for="relative name" class="formbold-form-label">Relative Name</label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${emer_name}">text box</div>
+                        <div class="text-container" th:text="${emer_name}"></div>
                     </div>
                 </div>
 
                 <div>
                     <label for="relation" class="formbold-form-label"> Relation </label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${emer_rel}">text box</div>
+                        <div class="text-container" th:text="${emer_rel}"></div>
                     </div>
                 </div>
 
                 <div>
                     <label for="relative phone" class="formbold-form-label">Relative Phone</label>
                     <div class="output-box">
-                        <div class="text-container" th:text="${emer_phn}">text box</div>
+                        <div class="text-container" th:text="${emer_phn}"></div>
                     </div>
                 </div>
                 <div class="btn-container">
                     <button class="btn">Assign Bed</button>
-                    <button class="btn">Release Patient</button>
+                    <button class="btn" onclick="getPat()">next Patient</button>
                     <button class="btn">Leave</button>
                 </div>
             </form>
         </div>
     </div>
 </body>
+<script>
+    function getPat(){
+        fetch("http://192.168.8.4:8080/api/hospital/get",{
+            method:"Get",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":`Bearer ${localStorage.getItem("token")}`
+            }
+        }).then(resp=>{
+            return resp.json()
+        }).then(res=>{
+            const inputs = document.querySelectorAll(".text-container")
+            if(Object.keys(res).includes("patient")){
+                let pat = JSON.parse(res.patient)
+                inputs[0].value 
+                return 0
+            }
+            window.alert(res.msg)
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+</script>
+</html>
