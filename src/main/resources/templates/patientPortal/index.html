@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="http://localhost:8080/html/patientdash/assets/css/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="http://localhost:8080/html/patientdash/assets/css/styles.css?1091">
 </head>
+
 <body>
     <section class="class_2">
         <div class="class_3">
@@ -17,27 +19,31 @@
             <div class="class_5" spellcheck="false">
                 Patient dashboard to save all your data!
             </div>
-            <img src="http://localhost:8080/html/patientdash/assets/images/site-stats-concept-illustration_114360-1434.webp" class="class_6">
+            <img src="http://localhost:8080/html/patientdash/assets/images/site-stats-concept-illustration_114360-1434.webp"
+                class="class_6">
         </div>
     </section>
     <section class="class_7">
         <div class="class_8">
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/surprised-happy-girl-pointing-left-recommend-product-advertisement-make-okay-gesture_176420-20191.jpg" class="class_10">
+                <img src="http://localhost:8080/html/patientdash/assets/images/surprised-happy-girl-pointing-left-recommend-product-advertisement-make-okay-gesture_176420-20191.jpg"
+                    class="class_10">
                 <h1 class="class_11">
                     Patient QR code
                     <button onclick="openPopup()">Click me!</button>
                 </h1>
             </div>
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/beautiful-happy-african-american-woman-has-surprised-joyful-expression-cannot-believe-sudden-success-dressed-casual-white-jumper_273609-43273.jpg" class="class_10">
+                <img src="http://localhost:8080/html/patientdash/assets/images/beautiful-happy-african-american-woman-has-surprised-joyful-expression-cannot-believe-sudden-success-dressed-casual-white-jumper_273609-43273.jpg"
+                    class="class_10">
                 <h1 class="class_11">
                     Patient details
                     <button onclick="openPop()">Click me!</button>
                 </h1>
             </div>
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg" class="class_10">
+                <img src="http://localhost:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg"
+                    class="class_10">
                 <h1 class="class_11">
                     Current Wait Time
                     <button onclick="openWait()">Click Me to Refresh!</button>
@@ -46,7 +52,8 @@
             </div>
 
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg" class="class_10">
+                <img src="http://localhost:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg"
+                    class="class_10">
                 <h1 class="class_11">
                     Doctor assigned
                     <button onclick="openDoctor()">Click me to choose your doctor!</button>
@@ -56,168 +63,166 @@
 
         <img id="qrCode" style="display: none;">
     </section>
+</body>
 
-    <script>
-        function openPopup() {
-            localStorage.setItem("token", "eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxIn0.lSIvcJrJYPXUjGffrIlGTTomfG0mD8mVFSfSg0eda4l-j_8gmAy3dnZCEx50WyuVWgW9sb_Mk6w4BFHxMPlpxQ")
-            fetch("http://localhost:8080/api/user/getQrPath", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-            }).then(res => {
-                return res.json()
-            }).then(resp => {
-                console.log(resp)
-                // Set the src attribute of the qrCode image
-                document.querySelector("#qrCode").src = `http://localhost:8080/${resp.path}`;
-                // Get the src attribute after it's set
-                var qrCodeImage = document.getElementById("qrCode");
-                var qrCodeLink = qrCodeImage.src;
-                // Open the popup window
-                var popupWindow = window.open("", "QRCodeWindow", "width=400, height=400");
-                popupWindow.document.write('<img src = "' + qrCodeLink + '">');
-            }).catch(err => {
-                console.log(err)
-            })
-        }
+</html>
+<script>
+    function openPopup() {
+        localStorage.setItem("token", "eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxIn0.lSIvcJrJYPXUjGffrIlGTTomfG0mD8mVFSfSg0eda4l-j_8gmAy3dnZCEx50WyuVWgW9sb_Mk6w4BFHxMPlpxQ")
+        fetch("http://localhost:8080/api/user/getQrPath", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+        }).then(res => {
+            return res.json()
+        }).then(resp => {
+            console.log(resp)
+            // Set the src attribute of the qrCode image
+            document.querySelector("#qrCode").src = `http://localhost:8080/${resp.path}`;
+            // Get the src attribute after it's set
+            var qrCodeImage = document.getElementById("qrCode");
+            var qrCodeLink = qrCodeImage.src;
+            // Open the popup window
+            var popupWindow = window.open("", "QRCodeWindow", "width=400, height=400");
+            popupWindow.document.write('<img src = "' + qrCodeLink + '">');
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
-        function openPop() {
-            fetch("http://localhost:8080/api/user/getPatientDetails", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-            }).then(res => {
-                return res.json()
-            }).then(resp => {
-                console.log(resp)
-                createPop(resp);
-            }).catch(error => {
-                console.error("Error fetching patient details", error);
-            });
-        }
+    function openPop() {
+        fetch("http://localhost:8080/api/user/getPatientDetails", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+        }).then(res => {
+            return res.json()
+        }).then(resp => {
+            console.log(resp)
+            createPop(resp);
+        }).catch(error => {
+            console.error("Error fetching patient details", error);
+        });
+    }
 
-        function createPop(patientDetails) {
-            const popup = window.open("", "PatientDetails", "width=600, height=400");
+    function createPop(patientDetails) {
+        const popup = window.open("", "PatientDetails", "width=600, height=400");
 
-            const formHTML = `
-                <h2>Pateint Details</h2>
-                <p>ID: ${patientDetails.patient_id}</p>
-                <p>DOB: ${patientDetails.date_of_birth}</p>
-                <p>Gender: ${patientDetails.gender}</p>
-                <p>Medical Conditions: ${patientDetails.medical_conditions}</p>
-                <p>Medications: ${patientDetails.medications}</p>
-                <p>Allergies: ${patientDetails.allergies}</p>
-                <p>Last Appointment Date: ${patientDetails.last_appointment_date}</p>
-                <p>First Name: ${patientDetails.first_name}</p>
-                <p>Last Name: ${patientDetails.last_name}</p>
-                <p>Phone Number: ${patientDetails.phone_number}</p>
-                <p>Email ID: ${patientDetails.email}</p>
-                <p>Address: ${patientDetails.address}</p>
-                <p>Emergency Name: ${patientDetails.emer_Name}</p>
-                <p>Emergency Relation: ${patientDetails.emer_Rel}</p>
-                <p>Emergency Number: ${patientDetails.emer_Phn}</p>            
-                `;
-            popup.document.body.innerHTML = formHTML;
-        }
+        const formHTML = `
+            <h2>Pateint Details</h2>
+            <p>ID: ${patientDetails.patient_id}</p>
+            <p>DOB: ${patientDetails.date_of_birth}</p>
+            <p>Gender: ${patientDetails.gender}</p>
+            <p>Medical Conditions: ${patientDetails.medical_conditions}</p>
+            <p>Medications: ${patientDetails.medications}</p>
+            <p>Allergies: ${patientDetails.allergies}</p>
+            <p>Last Appointment Date: ${patientDetails.last_appointment_date}</p>
+            <p>First Name: ${patientDetails.first_name}</p>
+            <p>Last Name: ${patientDetails.last_name}</p>
+            <p>Phone Number: ${patientDetails.phone_number}</p>
+            <p>Email ID: ${patientDetails.email}</p>
+            <p>Address: ${patientDetails.address}</p>
+            <p>Emergency Name: ${patientDetails.emer_Name}</p>
+            <p>Emergency Relation: ${patientDetails.emer_Rel}</p>
+            <p>Emergency Number: ${patientDetails.emer_Phn}</p>            
+            `;
+        popup.document.body.innerHTML = formHTML;
+    }
 
-        function openWait() {
-            fetch("http://localhost:8080/api/user/patWait", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-            }).then(res => {
-                return res.json()
-            }).then(resp => {
-                if (resp.hasOwnProperty('length')) {
-                    document.getElementById('waittime').innerText = resp.length + ' people';
-                } else {
-                    console.error('Error retrieving the wait time', resp.msg);
-                }
-            }).catch(error => console.error('Error retrieving wait time:', error));
-        }
+    function openWait() {
+        fetch("http://localhost:8080/api/user/patWait", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+        }).then(res => {
+            return res.json()
+        }).then(resp => {
+            if (resp.hasOwnProperty('length')) {
+                document.getElementById('waittime').innerText = resp.length + ' people';
+            } else {
+                console.error('Error retrieving the wait time', resp.msg);
+            }
+        }).catch(error => console.error('Error retrieving wait time:', error));
+    }
 
-        function openDoctor() {
-    		const popupWin = window.open('', 'DoctorAssign', "width=800, height=400");
+    function openDoctor() {
+        const popupWin = window.open('', 'DoctorAssign', "width=800, height=400");
 
-    // Fetch specialities and populate the "Select Speciality" dropdown
-    		fetch("http://localhost:8080/api/hospital/getSpeciality")
-       		 	.then(res => res.json())
-        		.then(data => {
-            		const specialitySelect = popupWin.document.getElementById('speciality');
-            		data.forEach(speciality => {
-                		const option = document.createElement('option');
-                		option.text = speciality;
-                		specialitySelect.add(option);
-            		});
-        		})
-        		.catch(error => console.error('Error fetching specialities:', error));
-
-    		const popupContent = `
-        		<html>
-            		<head>
-                		<title>Select Doctor</title>
-           			 </head>
-            		<body>
-                		<h2>Select Doctor</h2>
-                		<form id="doctorForm">
-                    <div>
-                        <label for="doctorName">Select Doctor by Name:</label><br>
-                        <select id="doctorName" name="doctorName">
-                            <!-- Options will be dynamically added -->
-                        </select><br><br>
-                        <label for="speciality">Select Speciality:</label><br>
-                        <select id="speciality" name="speciality">
-                            <!-- Options will be dynamically added -->
-                        </select>
-                    </div>
-                    <br>
-                    <div>
-                        <label for="specialityOnly">Select Doctor by Speciality Only:</label><br>
-                        <select id="specialityOnly" name="specialityOnly">
-                            <!-- Options will be dynamically added -->
-                        </select>
-                    </div>
-                    <br>
-                    <button type="submit">Submit</button>
-                </form>
-            </body>
-        </html>
-    `;
-
-    popupWin.document.write(popupContent);
-
-    // Add event listener to "Select Speciality" dropdown
-    const specialitySelect = popupWin.document.getElementById('speciality');
-    specialitySelect.addEventListener('change', function() {
-        const selectedSpeciality = specialitySelect.value;
-        fetch(`http://localhost:8080/api/hospital/getDocs?speciality=${selectedSpeciality}`)
+        // Fetch specialities and populate the "Select Speciality" dropdown
+        fetch("http://localhost:8080/api/hospital/getSpeciality")
             .then(res => res.json())
             .then(data => {
-                const doctorSelect = popupWin.document.getElementById('doctorName');
-                doctorSelect.innerHTML = ''; // Clear existing options
-                data.forEach(doctor => {
+                const specialitySelect = popupWin.document.getElementById('speciality');
+                data.forEach(speciality => {
                     const option = document.createElement('option');
-                    option.text = doctor.name; // Assuming the doctor object has a 'name' property
-                    option.value = doctor.id; // Assuming the doctor object has an 'id' property
-                    doctorSelect.add(option);
+                    option.text = speciality;
+                    specialitySelect.add(option);
                 });
             })
-            .catch(error => console.error('Error fetching doctors:', error));
-    });
+            .catch(error => console.error('Error fetching specialities:', error));
 
-    popupWin.document.getElementById('doctorForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        //event handle
-    });
-}
+        const popupContent = `
+            <html>
+                <head>
+                    <title>Select Doctor</title>
+                    </head>
+                <body>
+                    <h2>Select Doctor</h2>
+                    <form id="doctorForm">
+                <div>
+                    <label for="doctorName">Select Doctor by Name:</label><br>
+                    <select id="doctorName" name="doctorName">
+                        <!-- Options will be dynamically added -->
+                    </select><br><br>
+                    <label for="speciality">Select Speciality:</label><br>
+                    <select id="speciality" name="speciality">
+                        <!-- Options will be dynamically added -->
+                    </select>
+                </div>
+                <br>
+                <div>
+                    <label for="specialityOnly">Select Doctor by Speciality Only:</label><br>
+                    <select id="specialityOnly" name="specialityOnly">
+                        <!-- Options will be dynamically added -->
+                    </select>
+                </div>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </body>
+    </html>
+    `;
 
+        popupWin.document.write(popupContent);
 
-    </script>
-</body>
-</html>
+        // Add event listener to "Select Speciality" dropdown
+        const specialitySelect = popupWin.document.getElementById('speciality');
+        specialitySelect.addEventListener('change', function () {
+            const selectedSpeciality = specialitySelect.value;
+            fetch(`http://localhost:8080/api/hospital/getDocs?speciality=${selectedSpeciality}`)
+                .then(res => res.json())
+                .then(data => {
+                    const doctorSelect = popupWin.document.getElementById('doctorName');
+                    doctorSelect.innerHTML = ''; // Clear existing options
+                    data.forEach(doctor => {
+                        const option = document.createElement('option');
+                        option.text = doctor.name; // Assuming the doctor object has a 'name' property
+                        option.value = doctor.id; // Assuming the doctor object has an 'id' property
+                        doctorSelect.add(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching doctors:', error));
+        });
+
+        popupWin.document.getElementById('doctorForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            //event handle
+        });
+    }
+</script>
