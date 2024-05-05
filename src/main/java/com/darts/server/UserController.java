@@ -1,5 +1,6 @@
 package com.darts.server;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import com.darts.server.service.HospitalService;
 import com.darts.server.service.Patient_detailsService;
 import com.darts.server.service.SpecialistService;
 import com.darts.server.service.UserService;
+import com.google.zxing.WriterException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -66,10 +68,14 @@ public class UserController {
     private String docSecretKey;
 
     @GetMapping("/test")
-    public String test(){
+    public String test() throws WriterException, IOException{
         // Token Class patient
-        TokenClass tks = new TokenClass(secretKey);
-        return tks.generateToken(1, false);
+        TokenClass tks = new TokenClass(docSecretKey);
+        
+        specialistService.updateSpecialistQrPath(specialistService.getOneSpecialist(0).get(), CreateQr.generateAndSaveQRCode(tks.generateToken(0, false), "0", true));
+        specialistService.updateSpecialistQrPath(specialistService.getOneSpecialist(108).get(), CreateQr.generateAndSaveQRCode(tks.generateToken(108, false), "108", true));
+
+        return tks.generateToken(0, false);
     }
 
     // Add Users

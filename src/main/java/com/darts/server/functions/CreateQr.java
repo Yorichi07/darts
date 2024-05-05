@@ -32,13 +32,11 @@ public class CreateQr {
             flpth = "./src/main/resources/static/qrs/user/"+UID+".png";
         }else{
             filePath = "./build/resources/main/static/qrs/docs/"+UID+".png";
-            flpth = "./src/main/resources/static/qrs/user/"+UID+".png";
+            flpth = "./src/main/resources/static/qrs/docs/"+UID+".png";
         }
 
         // Create QR code writer
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
-
-        String payload = "http://192.168.144.4:8080/api/pages/getPatientDetails?token="+token;
 
         // Generate BitMatrix
         BitMatrix bitMatrix = qrCodeWriter.encode(token, BarcodeFormat.QR_CODE, width, height, hintMap);

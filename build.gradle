@@ -30,6 +30,22 @@ dependencies {
 	implementation 'com.google.zxing:core:3.5.3'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// Use ML models
+	// https://mvnrepository.com/artifact/org.jpmml/pmml-model
+	implementation 'org.jpmml:pmml-model:1.6.4'
+
+	// https://mvnrepository.com/artifact/org.jpmml/pmml-evaluator
+	implementation 'org.jpmml:pmml-evaluator:1.6.4'
+
+	// https://mvnrepository.com/artifact/com.opencsv/opencsv
+	implementation 'com.opencsv:opencsv:5.9'
+
+	// https://mvnrepository.com/artifact/sh.joinery/joinery-dataframe
+	implementation 'sh.joinery:joinery-dataframe:1.10'
+
+	// https://mvnrepository.com/artifact/org.json/json
+	implementation 'org.json:json:20240303'
 }
 
 tasks.named('test') {

@@ -51,6 +51,11 @@ public class WebMvcController implements WebMvcConfigurer{
         return "doctorPortal/qr";
     }
 
+    @GetMapping("/scanQrPat")
+    public String patQrCode(){
+        return "qrPat";
+    }
+
     @GetMapping("/scanQr")
     public String scanQr(){
         return "qrgen";
