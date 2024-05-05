@@ -132,82 +132,126 @@
             `;
         popup.document.body.innerHTML = formHTML;
     }
+    
+    let symptoms={}
+    function addSymptoms(){
+        const specialitySelect = popupWin.document.getElementById('symptoms').value;
+        symptoms.add(specialitySelect)
+    }
+    function submitSymptoms(){
+        fetch("http://localhost:8080/api/hospital/assignDocBySymp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body:JSON.stringify(symptoms)
+        })
+        .then(res => res.json())
+        .then(resp => window.alert(resp.msg))
+    }
+    function openDoctor() {
+        const popupWin = window.open('', "DoctorAssign", "width=600, height=400");
 
-		function openDoctor() {
-			const popupWin = window.open('', "DoctorAssign", "width=600, height=400");
+        fetch("http://localhost:8080/api/hospital/getSpeciality", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                const specialitySelect = popupWin.document.getElementById('speciality');
+                data.forEach(speciality => {
+                    const option = popupWin.document.createElement('option');
+                    option.text = speciality;
+                    specialitySelect.add(option);
+                });
+            })
+            .catch(error => console.error("Error fetching specialities:", error));
+        
+        //for symptoms    
+        fetch("http://localhost:8080/api/hospital/getSymptoms", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                const specialitySelect = popupWin.document.getElementById('symptoms');
+                data.forEach(speciality => {
+                    const option = popupWin.document.createElement('option');
+                    option.text = speciality;
+                    specialitySelect.add(option);
+                });
+            })
+            .catch(error => console.error("Error fetching symptoms:", error));
 
-			fetch("http://localhost:8080/api/hospital/getSpeciality",{
-				method:"GET",
-				headers:{
-					"Content-Type":"application/json"
-				}
-			})
-				.then(res=> res.json())
-				.then(data=> {
-					const specialitySelect = popupWin.document.getElementById('speciality');
-					data.forEach(speciality=>{
-						const option = popupWin.document.createElement('option');
-						option.text = speciality;
-						specialitySelect.add(option);
-					});
-				})
-				.catch(error => console.error("Error fetching specialities:", error));
-
-			const popupContent = `
+        const popupContent = `
 				<html>
-					<head>
-						<title>Select Doctor</title>
-					</head>
-					<body>
-						<h2>Select Doctor</h2>
-						<form id="doctorForm">
-							<div>
-								<label for="speciality">Select Speciality:</label><br>
-								<select id="speciality" name="speciality">
-									<!--Options will be added>
-								</select>
-								<br><br>
-								<label for="doctorName">Select Doctor by Name:</label><br>
-								<select id="doctorName" name="doctorName">
-									<!--Options will be added>
-								</select>
-							</div>
-							<br>
-							<button type="submit">Submit</button>
-						</form>
-					</body>
-				</html>
-
+                    <head>
+                        <title>Select Doctor</title>
+                    </head>
+                    <body>
+                        <h2>Doctor Allocation</h2>
+                        <form id="doctorForm">
+                            <div>
+                                <label for="doctorName">Select Doctor by Name:</label><br>
+                                <select id="doctorName" name="doctorName">
+                                    <!--Options will be added-->
+                                </select>
+                                <br><br>
+                                <label for="speciality">Select Speciality:</label><br>
+                                <select id="speciality" name="speciality">
+                                    <!--Options will be added-->
+                                </select>
+                                <br><br>
+                                <label for="symptoms">Select Symptoms:</label><br>
+                                <select id="symptoms" name="symptoms">
+                                    <!--Options will be added-->
+                                </select>
+                                <br>
+                                <button id="addSymptoms" onclick="addSymptoms()" >Add Symptoms</button>
+                                <br>
+                                <button id="submitSymptoms" onclick="submitSymptoms()" >Submit Symptoms</button>
+                            </div>
+                            <br>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </body>
+                </html>
 			`;
 
-			popupWin.document.write(popupContent);
+        popupWin.document.write(popupContent);
 
-			popupWin.document.getElementById('speciality').addEventListener('change', function(){
-				const selectedSpeciality = this.value;
-				fetch(`http://localhost:8080/api/hospital/getDocs?speciality=${selectedSpeciality}`,{
-					method:"GET",
-					headers:{
-						'Content-Type':'application/json'
-					}
-				})
-					.then(res=>res.json())
-					.then(data=>{
-						const doctorSelect = popupWin.document.getElementById('doctorName');
-						doctorSelect.innerHTML = '';
-						data.forEach(doctor=>{
-							const option = popupWin.document.createElement('option');
-							option.text=doctor.docName;
-							option.value=doctor.docID;
-							doctorSelect.add(option);
-						});
-					})
-					.catch(error => console.error('Error fetching doctor:', error));
-			});
-			popupWin.document.getElementById('doctorForm').addEventListener('submit', function(event){
-				event.preventDefault();
-				//handle karna hai event ko
-			});
-		}
-	 </script>
+        popupWin.document.getElementById('speciality').addEventListener('change', function () {
+            const selectedSpeciality = this.value;
+            fetch(`http://localhost:8080/api/hospital/getDocs?speciality=${selectedSpeciality}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const doctorSelect = popupWin.document.getElementById('doctorName');
+                    doctorSelect.innerHTML = '';
+                    data.forEach(doctor => {
+                        const option = popupWin.document.createElement('option');
+                        option.text = doctor.docName;
+                        option.value = doctor.docID;
+                        doctorSelect.add(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching doctor:', error));
+        });
+        popupWin.document.getElementById('doctorForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            //handle karna hai event ko
+        });
+    }
+</script>
 </body>
+
 </html>
