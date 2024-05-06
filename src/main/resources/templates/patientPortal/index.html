@@ -233,13 +233,12 @@
         });
 
         popupWin.document.getElementById('submitSpeciality').addEventListener('click', function () {
-            fetch("http://localhost:8080/api/hospital/assignDocBySpec", {
-                method: "POST",
+            fetch("http://localhost:8080/api/hospital/assignDocByName?did="+popupWin.document.getElementById('doctorName').value, {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify({"list":symptom})
             })
                 .then(res => res.json())
                 .then(resp => window.alert(resp.msg))
