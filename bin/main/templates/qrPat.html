@@ -95,6 +95,7 @@ video {
     </script>
 
     <script>
+        localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxIn0.uwrxJsYZfXZswjmfpMCwG_e2aJfxZ8rc6rxnbIdBXNzx9Bov8xBS5WaP2pXJ99VpaqxD-Qmwam2bkLyL_Xyi2A");
         function domReady(fn) {
         if (
             document.readyState === "complete" ||
@@ -111,7 +112,7 @@ video {
     // If found you qr code
         function onScanSuccess(decodeText, decodeResult) {
              alert("QR scanned");
-             window.open("http://192.168.8.4/api/pages/getPatientDetails?token="+decodeText,"_blank")
+             window.open("http://192.168.8.4:8080/api/pages/getPatientDetails?token="+decodeText,"_blank")
         }
  
         let htmlscanner = new Html5QrcodeScanner(

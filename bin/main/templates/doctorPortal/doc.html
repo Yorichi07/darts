@@ -127,8 +127,8 @@
                     </div>
                 </div>
                 <div class="btn-container">
-                    <button class="btn" onclick="getPat()">next Patient</button>
-                    <button class="btn" onclick="leave()">Leave</button>
+                    <button class="btn" onclick="getPat()" type="button">next Patient</button>
+                    <button class="btn" onclick="leave()" type="button">Leave</button>
                 </div>
             </form>
         </div>
@@ -151,8 +151,8 @@
     }
 
     function getPat(){
-        fetch("http://192.168.8.4:8080/api/hospital/get",{
-            method:"Get",
+        fetch("http://192.168.8.4:8080/api/hospital/getNextPat",{
+            method:"GET",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`
@@ -161,9 +161,25 @@
             return resp.json()
         }).then(res=>{
             const inputs = document.querySelectorAll(".text-container")
+            console.log(res)
             if(Object.keys(res).includes("patient")){
                 let pat = JSON.parse(res.patient)
-                inputs[0].value 
+                console.log(pat)
+                console.log(inputs)
+                inputs[0].value = pat.first_name;
+                inputs[1].value = pat.last_name;
+                inputs[2].value = pat.email;
+                inputs[3].value = pat.gender;
+                inputs[4].value = pat.phone_number;
+                inputs[4].value = pat.date_of_birth;
+                inputs[4].value = pat.address;
+                inputs[4].value = pat.allergies;
+                inputs[4].value = pat.last_appointment_date;
+                inputs[4].value = pat.medications;
+                inputs[4].value = pat.medical_conditions;
+                inputs[4].value = pat.emer_Name;
+                inputs[4].value = pat.emer_Rel;
+                inputs[4].value = pat.emer_Phn;
                 return 0
             }
             window.alert(res.msg)

@@ -95,7 +95,7 @@ video {
     </script>
 
     <script>
-        localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxMCJ9.yfkk1Y8awwvdQEVcMZkKC_9PsDJEON4RK0oYNCj4oP37hPBICOOP52aq5lNTWKeRu51jTkmtq_zJkEwJycmIJw");
+        localStorage.setItem("token","eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxIn0.uwrxJsYZfXZswjmfpMCwG_e2aJfxZ8rc6rxnbIdBXNzx9Bov8xBS5WaP2pXJ99VpaqxD-Qmwam2bkLyL_Xyi2A");
         function domReady(fn) {
         if (
             document.readyState === "complete" ||
@@ -110,7 +110,7 @@ video {
     domReady(function () {
  
     // If found you qr code
-        function onScanSuccess(decodeText, decodeResult) {
+        function onscanSuccess(decodeText, decodeResult) {
              alert("QR scanned");
              fetch("http://192.168.8.4:8080/api/hospital/doctorPunchIn",{
                 method:"POST",
@@ -134,7 +134,7 @@ video {
             "my-qr-reader",
             { fps: 10, qrbos: 250 }
         );
-        htmlscanner.render(onScanSuccess);
+        htmlscanner.render(onscanSuccess);
     });
     </script>
     

@@ -70,12 +70,12 @@ public class UserController {
     @GetMapping("/test")
     public String test() throws WriterException, IOException{
         // Token Class patient
+        TokenClass tk = new TokenClass(secretKey);
         TokenClass tks = new TokenClass(docSecretKey);
         
-        specialistService.updateSpecialistQrPath(specialistService.getOneSpecialist(0).get(), CreateQr.generateAndSaveQRCode(tks.generateToken(0, false), "0", true));
-        specialistService.updateSpecialistQrPath(specialistService.getOneSpecialist(108).get(), CreateQr.generateAndSaveQRCode(tks.generateToken(108, false), "108", true));
+        CreateQr.generateAndSaveQRCode(tk.generateToken(1, false), "1", false);
 
-        return tks.generateToken(0, false);
+        return tks.generateToken(1, false);
     }
 
     // Add Users
