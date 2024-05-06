@@ -18,11 +18,12 @@ document.getElementById('sinbut').addEventListener('click', async()=>{
 		headers: {
 			'Content-Type' : 'application/json'
 		},
-		body: JSON.stringify({'UserName' :'email', 'PassWord':'password'})
+		body: JSON.stringify({'UserName' :email, 'PassWord':password})
 	});
 	if(response.ok){
 		const data = await response.json();
 		document.cookie = data.token;
+		window.alert(data.msg)
 		//redirection
 		location.replace('http://192.168.8.4:8080/api/pages/patientDashboard');
 	}else{
