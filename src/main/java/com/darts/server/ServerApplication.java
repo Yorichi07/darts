@@ -13,11 +13,6 @@ import com.google.zxing.WriterException;
 public class ServerApplication {
 	public static void main(String[] args) throws WriterException, IOException {
 		DecisionTreeSymp.initObjs();
-		ArrayList<String> syms = new ArrayList<>();
-		syms.add("fatigue");
-		syms.add("muscle_pain");
-		syms.add("red_spots_over_body");
-		System.out.println(DecisionTreeSymp.getDisease(syms));
 		SpringApplication.run(ServerApplication.class, args);
 	}
 
