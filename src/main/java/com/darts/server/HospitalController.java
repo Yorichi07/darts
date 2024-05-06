@@ -1,5 +1,6 @@
 package com.darts.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -134,13 +135,19 @@ public class HospitalController {
         return ResponseEntity.ok(DecisionTreeSymp.jsonArray);
     }
 
+    @SuppressWarnings("unchecked")
     @PostMapping("/assignDocBySymp")
     public ResponseEntity<HashMap<String,Object>> assignDocBySymp(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,@RequestBody HashMap<String,Object> req){
         HashMap<String,Object> resp = new HashMap<>();
         TokenClass tkn = new TokenClass(secretKey);
 
         if(tkn.verifyToken(token.split(" ")[1])){
-
+            Integer UID = Integer.parseInt(tkn.getPayload());
+            if(HospitalRecords.insertPat(UID, DecisionTreeSymp.getDisease((ArrayList<String>) req.get("list")), specialistService)){
+                resp.put("msg","doctor assigned");
+            }
+            resp.put("msg","no doctor available");
+            return ResponseEntity.ok(resp);
         }
         
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resp);

@@ -45,7 +45,10 @@ public class WebMvcController implements WebMvcConfigurer{
     public String Signup(){
         return "doctorPortal/Sign";
     }
-
+    @GetMapping("/signIn")
+    public String SignIn(){
+        return "patientPortal/Sign";
+    }
     @GetMapping("/docQrCode")
     public String docQrCode(){
         return "doctorPortal/qr";
