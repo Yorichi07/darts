@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Untitled</title>
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/html/patientdash/assets/css/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/html/patientdash/assets/css/styles.css?1091">
+    <link rel="stylesheet" type="text/css" href="http://192.168.8.4:8080/html/patientdash/assets/css/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="http://192.168.8.4:8080/html/patientdash/assets/css/styles.css?1091">
 </head>
 
 <body>
@@ -19,14 +19,14 @@
             <div class="class_5" spellcheck="false">
                 Patient dashboard to save all your data!
             </div>
-            <img src="http://localhost:8080/html/patientdash/assets/images/site-stats-concept-illustration_114360-1434.webp"
+            <img src="http://192.168.8.4:8080/html/patientdash/assets/images/site-stats-concept-illustration_114360-1434.webp"
                 class="class_6">
         </div>
     </section>
     <section class="class_7">
         <div class="class_8">
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/surprised-happy-girl-pointing-left-recommend-product-advertisement-make-okay-gesture_176420-20191.jpg"
+                <img src="http://192.168.8.4:8080/html/patientdash/assets/images/surprised-happy-girl-pointing-left-recommend-product-advertisement-make-okay-gesture_176420-20191.jpg"
                     class="class_10">
                 <h1 class="class_11">
                     Patient QR code
@@ -34,7 +34,7 @@
                 </h1>
             </div>
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/beautiful-happy-african-american-woman-has-surprised-joyful-expression-cannot-believe-sudden-success-dressed-casual-white-jumper_273609-43273.jpg"
+                <img src="http://192.168.8.4:8080/html/patientdash/assets/images/beautiful-happy-african-american-woman-has-surprised-joyful-expression-cannot-believe-sudden-success-dressed-casual-white-jumper_273609-43273.jpg"
                     class="class_10">
                 <h1 class="class_11">
                     Patient details
@@ -42,7 +42,7 @@
                 </h1>
             </div>
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg"
+                <img src="http://192.168.8.4:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg"
                     class="class_10">
                 <h1 class="class_11">
                     Current Wait Time
@@ -52,7 +52,7 @@
             </div>
 
             <div class="class_9">
-                <img src="http://localhost:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg"
+                <img src="http://192.168.8.4:8080/html/patientdash/assets/images/close-up-shot-ordinary-fair-haired-caucasian-male-with-bristle-earrings-staring-carefree-being-indifferent-calm_176420-25002.jpg"
                     class="class_10">
                 <h1 class="class_11">
                     Doctor assigned
@@ -69,7 +69,7 @@
 <script>
     function openPopup() {
         localStorage.setItem("token", "eyJhbGciOiJIUzUxMiJ9.eyJVSUQiOiIxIn0.lSIvcJrJYPXUjGffrIlGTTomfG0mD8mVFSfSg0eda4l-j_8gmAy3dnZCEx50WyuVWgW9sb_Mk6w4BFHxMPlpxQ")
-        fetch("http://localhost:8080/api/user/getQrPath", {
+        fetch("http://192.168.8.4:8080/api/user/getQrPath", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -80,7 +80,7 @@
         }).then(resp => {
             console.log(resp)
             // Set the src attribute of the qrCode image
-            document.querySelector("#qrCode").src = `http://localhost:8080/${resp.path}`;
+            document.querySelector("#qrCode").src = `http://192.168.8.4:8080/${resp.path}`;
             // Get the src attribute after it's set
             var qrCodeImage = document.getElementById("qrCode");
             var qrCodeLink = qrCodeImage.src;
@@ -93,7 +93,7 @@
     }
 
     function openPop() {
-        fetch("http://localhost:8080/api/user/getPatientDetails", {
+        fetch("http://192.168.8.4:8080/api/user/getPatientDetails", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -137,7 +137,7 @@
         let symptom = []
         const popupWin = window.open('', "DoctorAssign", "width=600, height=400");
 
-        fetch("http://localhost:8080/api/hospital/getSpeciality", {
+        fetch("http://192.168.8.4:8080/api/hospital/getSpeciality", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -155,7 +155,7 @@
             .catch(error => console.error("Error fetching specialities:", error));
 
         //for symptoms    
-        fetch("http://localhost:8080/api/hospital/getSymptoms", {
+        fetch("http://192.168.8.4:8080/api/hospital/getSymptoms", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -181,15 +181,16 @@
                         <h2>Doctor Allocation</h2>
                         <form id="doctorForm">
                             <div>
-                                <label for="doctorName">Select Doctor by Name:</label><br>
-                                <select id="doctorName" name="doctorName">
-                                    <!--Options will be added-->
-                                </select>
-                                <br><br>
                                 <label for="speciality">Select Speciality:</label><br>
                                 <select id="speciality" name="speciality">
                                     <!--Options will be added-->
                                 </select>
+                                <br><br>
+                                <label for="doctorName">Select Doctor by Name:</label><br>
+                                <select id="doctorName" name="doctorName">
+                                    <!--Options will be added-->
+                                </select>
+                                <button id="submitSpeciality">Submit Speciality</button>
                                 <br><br>
                                 <label for="symptoms">Select Symptoms:</label><br>
                                 <select id="symptoms" name="symptoms">
@@ -211,7 +212,7 @@
 
         popupWin.document.getElementById('speciality').addEventListener('change', function () {
             const selectedSpeciality = this.value;
-            fetch(`http://localhost:8080/api/hospital/getDocs?speciality=${selectedSpeciality}`, {
+            fetch(`http://192.168.8.4:8080/api/hospital/getDocs?speciality=${selectedSpeciality}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
@@ -230,6 +231,18 @@
                 })
                 .catch(error => console.error('Error fetching doctor:', error));
         });
+
+        popupWin.document.getElementById('submitSpeciality').addEventListener('click', function () {
+            fetch("http://192.168.8.4:8080/api/hospital/assignDocByName?did="+popupWin.document.getElementById('doctorName').value, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+            })
+                .then(res => res.json())
+                .then(resp => window.alert(resp.msg))
+        });
         
         popupWin.document.getElementById('addSymptoms').addEventListener('click', function () {
             const specialitySelect = popupWin.document.getElementById('symptoms').value;
@@ -238,7 +251,7 @@
         });
 
         popupWin.document.getElementById('submitSymptoms').addEventListener('click', function () {
-            fetch("http://localhost:8080/api/hospital/assignDocBySymp", {
+            fetch("http://192.168.8.4:8080/api/hospital/assignDocBySymp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
