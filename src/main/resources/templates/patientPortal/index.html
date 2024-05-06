@@ -181,15 +181,16 @@
                         <h2>Doctor Allocation</h2>
                         <form id="doctorForm">
                             <div>
-                                <label for="doctorName">Select Doctor by Name:</label><br>
-                                <select id="doctorName" name="doctorName">
-                                    <!--Options will be added-->
-                                </select>
-                                <br><br>
                                 <label for="speciality">Select Speciality:</label><br>
                                 <select id="speciality" name="speciality">
                                     <!--Options will be added-->
                                 </select>
+                                <br><br>
+                                <label for="doctorName">Select Doctor by Name:</label><br>
+                                <select id="doctorName" name="doctorName">
+                                    <!--Options will be added-->
+                                </select>
+                                <button id="submitSpeciality">Submit Speciality</button>
                                 <br><br>
                                 <label for="symptoms">Select Symptoms:</label><br>
                                 <select id="symptoms" name="symptoms">
@@ -229,6 +230,19 @@
                     });
                 })
                 .catch(error => console.error('Error fetching doctor:', error));
+        });
+
+        popupWin.document.getElementById('submitSpeciality').addEventListener('click', function () {
+            fetch("http://localhost:8080/api/hospital/assignDocBySpec", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({"list":symptom})
+            })
+                .then(res => res.json())
+                .then(resp => window.alert(resp.msg))
         });
         
         popupWin.document.getElementById('addSymptoms').addEventListener('click', function () {
